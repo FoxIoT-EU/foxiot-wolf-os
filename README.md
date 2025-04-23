@@ -9,8 +9,8 @@ Make sure [Git](https://git-scm.com/downloads) is installed.
 Then clone this repository:
 
 ```sh
-git clone https://your.git.repo/foxiot-gateway-os.git TODO!
-cd foxiot-gateway-os
+git clone https://github.com/FoxIoT-EU/foxiot-wolf-os.git
+cd foxiot-wolf-os
 ```
 
 ## Supported Build Methods
@@ -23,7 +23,7 @@ You can build the OS in two ways:
 ## Repository Structure
 
 ```
-foxiot-gateway-os/
+foxiot-wolf-os/
 ├── base/                       # Core packages, common device tree, kernel image, and build logic
 ├── docker/
 │   ├── Dockerfile
