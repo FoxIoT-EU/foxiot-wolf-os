@@ -1,0 +1,42 @@
+#include "init.list"
+#include "base.list"
+#include "foxiot_wolf.list"
+#include "mtd.list"
+#include "uqmi.list"
+#include "libusb.list"
+#include "iptables.list"
+#include "ext4_utils.list"
+#include "chrony.list"
+#include "wireguard.list"
+// #include "openvpn_3.3.0.list"
+
+
+file /VERSION root/VERSION 444 0 0
+
+dir /run 755 0 0
+dir /run/wolf 755 0 0
+
+dir /var/log/ 755 0 0
+
+dir /etc 755 0 0
+file /etc/rc.local root/etc/rc.local 755 0 0
+file /etc/rc.netd root/etc/rc.netd 755 0 0
+file /etc/rc.dropbear root/etc/rc.dropbear 755 0 0
+file /etc/conn-monitor.sh root/etc/conn-monitor.sh 755 0 0
+file /etc/firewall root/etc/firewall 755 0 0
+file /etc/nologin root/etc/nologin 600 0 0
+file /etc/profile root/etc/profile 644 0 0
+file /etc/passwd root/etc/passwd 644 0 0
+
+dir /etc/dropbear 755 0 0
+dir /root/.ssh 755 0 0
+file /root/.ssh/authorized_keys root/etc/dropbear/authorized_keys 400 0 0
+
+dir /bin 755 0 0
+file /bin/fdev root/bin/fdev 755 0 0
+
+slink /usr/bin /bin 777 0 0
+
+dir /mnt/rodata 755 0 0
+dir /mnt/rwdata 755 0 0
+

@@ -1,0 +1,6 @@
+dir /etc 755 0 0
+file /etc/rc.wireguard ${ROOT}/etc/rc.wireguard 755 0 0
+
+dir /bin 755 0 0
+file /bin/wg ${ROOT}/bin/wg 755 0 0
+file /bin/wg_if ${ROOT}/bin/wg_if 755 0 0

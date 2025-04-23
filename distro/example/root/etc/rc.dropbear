@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Ensures Dropbear host keys exist in /mnt/rodata.
+# Regenerates missing or broken keys by remounting temporarily as read-write.
+# Starts Dropbear and restarts it if it crashes.
+
+KEYDIR="/mnt/rodata/.ssh"
+IS_RW=0
+
+generate_key_if_missing() {
+	KEYFILE="$KEYDIR/dropbear_host_key_$1"
+	if ! dropbearkey -y -f "$KEYFILE" >/dev/null 2>&1; then
+		mount -o remount,rw /mnt/rodata
+		IS_RW=1
+		mkdir -p "$KEYDIR"
+		dropbearkey -t "$1" -f "$KEYFILE"
+	fi
+}
+
+
+# Ensure all keys exist (and regenerate if needed)
+for TYPE in dss rsa ecdsa ed25519; do
+    generate_key_if_missing "$TYPE"
+done
+
+# Remount read-only if we made it read-write earlier
+[ "$IS_RW" -eq 1 ] && mount -o remount,ro /mnt/rodata
+
+# Start Dropbear in an infinite loop
+while true; do
+	/bin/dropbear -F \
+		-r "$KEYDIR/dropbear_host_key_dss" \
+		-r "$KEYDIR/dropbear_host_key_rsa" \
+		-r "$KEYDIR/dropbear_host_key_ecdsa" \
+		-r "$KEYDIR/dropbear_host_key_ed25519" \
+		>/dev/null 2>&1
+
+	# If Dropbear crashed or failed, try regenerating any missing keys in the temporary overlay 
+	[ $? -ne 0 ] && /bin/dropbear -F -R
+
+	sleep 5
+done 

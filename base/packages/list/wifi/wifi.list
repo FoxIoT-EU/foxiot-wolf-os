@@ -1,0 +1,22 @@
+dir /etc 755 0 0
+file /etc/rc.wifi ${ROOT}/etc/rc.wifi 755 0 0
+file /etc/wpa_supplicant.conf ${ROOT}/etc/wpa_supplicant.conf 644 0 0
+file /etc/wifi_ap_udhcpd.conf ${ROOT}/etc/wifi_ap_udhcpd.conf 644 0 0
+
+dir /bin 755 0 0
+file /bin/wpa_supplicant ${ROOT}/bin/wpa_supplicant 755 0 0
+file /bin/wpa_cli ${ROOT}/bin/wpa_cli 755 0 0
+
+dir /lib 755 0 0
+dir /lib/firmware 755 0 0
+dir /lib/firmware/atmel 755 0 0
+dir /lib/firmware/rtlwifi 755 0 0
+
+file /lib/firmware/rt2870.bin ${ROOT}/lib/firmware/rt2870.bin 644 0 0
+file /lib/firmware/mt7601u.bin ${ROOT}/lib/firmware/mt7601u.bin 644 0 0
+file /lib/firmware/atmel/wilc1003_firmware.bin ${ROOT}/lib/firmware/atmel/wilc1003_firmware.bin 644 0 0
+file /lib/firmware/atmel/wilc1000_wifi_firmware-1.bin ${ROOT}/lib/firmware/atmel/wilc1000_wifi_firmware-1.bin 644 0 0
+file /lib/firmware/rtlwifi/rtl8723bu_nic.bin ${ROOT}/lib/firmware/rtlwifi/rtl8723bu_nic.bin 644 0 0
+file /lib/firmware/regulatory.db ${ROOT}/lib/firmware/regulatory.db 644 0 0
+file /lib/firmware/regulatory.db.p7s ${ROOT}/lib/firmware/regulatory.db.p7s 644 0 0
+

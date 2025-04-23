@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+flash_erase /dev/mtd2 0 0
+nandwrite -p /dev/mtd2 "$1"
+
+exit 0
+

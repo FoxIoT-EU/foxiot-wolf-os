@@ -1,0 +1,9 @@
+file /bin/fsck.ext4 ${ROOT}/bin/fsck.ext4 755 0 0
+slink /bin/fsck.ext3 /bin/fsck.ext4 777 0 0
+slink /bin/fsck.ext2 /bin/fsck.ext4 777 0 0
+
+file /bin/mke2fs ${ROOT}/bin/mke2fs 755 0 0
+slink /bin/mkfs.ext4 /bin/mke2fs 777 0 0
+slink /bin/mkfs.ext3 /bin/mke2fs 777 0 0
+slink /bin/mkfs.ext2 /bin/mke2fs 777 0 0
+

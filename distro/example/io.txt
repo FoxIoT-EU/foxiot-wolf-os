@@ -1,0 +1,160 @@
+USB multiplexer - PC11: (USB / micro USB)
+	gpioset b0004080.nuc980-gpio 11=1
+	gpioset b0004080.nuc980-gpio 11=0
+
+USB power       - PC14: (ON / OFF)
+	gpioset b0004080.nuc980-gpio 14=1
+	gpioset b0004080.nuc980-gpio 14=0
+
+SD power        - PB13: (ON / OFF)
+	gpioset b0004040.nuc980-gpio 13=0
+	gpioset b0004040.nuc980-gpio 13=1
+
+PCIe power      - PC2: (ON / OFF)
+	gpioset b0004080.nuc980-gpio 2=1
+	gpioset b0004080.nuc980-gpio 2=0
+
+PCIe PERST      - PG15: (ON / OFF)
+	gpioset b0004180.nuc980-gpio 15=0
+	gpioset b0004180.nuc980-gpio 15=1
+
+battery charg.  - PC0: (ON / OFF)
+	gpioset b0004080.nuc980-gpio 0=1
+	gpioset b0004080.nuc980-gpio 0=0
+
+LCD power       - PB8: (ON / OFF)
+	gpioset b0004040.nuc980-gpio 8=0
+	gpioset b0004040.nuc980-gpio 8=1
+
+====================================================
+3OiRo_RS485:
+Relay1           - PF2: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 2=1
+	gpioset b0004140.nuc980-gpio 2=0
+
+Relay2           - PF3: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 3=1
+	gpioset b0004140.nuc980-gpio 3=0
+
+Relay3           - PF5: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 5=1
+	gpioset b0004140.nuc980-gpio 5=0
+
+IN1             - PE10
+	gpioget b0004100.nuc980-gpio 10
+
+IN2             - PB4
+	gpioget b0004040.nuc980-gpio 4
+
+IN3             - PB5
+	gpioget b0004040.nuc980-gpio 5
+
+RS485:
+	/dev/ttyS6
+	
+	ECHO - PA2
+		gpioset b0004000.nuc980-gpio 2=1
+		gpioset b0004000.nuc980-gpio 2=0
+		
+====================================================
+8DiDoAn1Ro_RS485:
+
+Relay           - PF4: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 4=1
+	gpioset b0004140.nuc980-gpio 4=0
+
+OUT1            - PE12: (ON / OFF)
+	gpioset b0004100.nuc980-gpio 12=1
+	gpioset b0004100.nuc980-gpio 12=0
+	
+OUT2            - PE10: (ON / OFF)
+	gpioset b0004100.nuc980-gpio 10=1
+	gpioset b0004100.nuc980-gpio 10=0
+
+OUT3            - PF5: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 5=1
+	gpioset b0004140.nuc980-gpio 5=0
+
+OUT4            - PF6: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 6=1
+	gpioset b0004140.nuc980-gpio 6=0
+
+OUT5            - PF9: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 9=1
+	gpioset b0004140.nuc980-gpio 9=0
+
+OUT6            - PF7: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 7=1
+	gpioset b0004140.nuc980-gpio 7=0
+
+OUT7            - PF8: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 8=1
+	gpioset b0004140.nuc980-gpio 8=0
+
+OUT8            - PF10: (ON / OFF)
+	gpioset b0004140.nuc980-gpio 10=1
+	gpioset b0004140.nuc980-gpio 10=0
+
+IN1             - PB6
+	gpioget b0004040.nuc980-gpio 6
+
+IN2             - PB4
+	gpioget b0004040.nuc980-gpio 4
+
+IN3             - PB7
+	gpioget b0004040.nuc980-gpio 7
+
+IN4             - PB5
+	gpioget b0004040.nuc980-gpio 5
+
+IN5             - PF1
+	gpioget b0004140.nuc980-gpio 1
+
+IN6             - PF0
+	gpioget b0004140.nuc980-gpio 0
+
+IN7             - PF2
+	gpioget b0004140.nuc980-gpio 2
+
+IN8             - PF3
+	gpioget b0004140.nuc980-gpio 3
+
+PULLUP1         - SPI1: (ON / OFF)
+	gpioset 74hc595 0=1
+	gpioset 74hc595 0=0
+
+PULLUP2         - SPI2: (ON / OFF)
+	gpioset 74hc595 1=1
+	gpioset 74hc595 1=0
+
+PULLUP3         - SPI3: (ON / OFF)
+	gpioset 74hc595 2=1
+	gpioset 74hc595 2=0
+
+PULLUP4         - SPI4: (ON / OFF)
+	gpioset 74hc595 3=1
+	gpioset 74hc595 3=0
+
+PULLUP5         - SPI5: (ON / OFF)
+	gpioset 74hc595 4=1
+	gpioset 74hc595 4=0
+
+PULLUP6         - SPI6: (ON / OFF)
+	gpioset 74hc595 5=1
+	gpioset 74hc595 5=0
+
+PULLUP7         - SPI7: (ON / OFF)
+	gpioset 74hc595 6=1
+	gpioset 74hc595 6=0
+
+PULLUP8         - SPI8: (ON / OFF)
+	gpioset 74hc595 7=1
+	gpioset 74hc595 7=0
+
+RS485:
+	/dev/ttyS6
+	
+	ECHO - PA2
+		gpioset b0004000.nuc980-gpio 2=1
+		gpioset b0004000.nuc980-gpio 2=0
+

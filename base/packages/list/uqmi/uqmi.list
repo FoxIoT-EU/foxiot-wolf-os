@@ -1,0 +1,3 @@
+dir /bin 755 0 0
+file /bin/uqmi ${ROOT}/bin/uqmi 755 0 0
+

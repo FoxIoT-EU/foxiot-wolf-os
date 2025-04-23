@@ -1,0 +1,411 @@
+/dts-v1/;
+
+#include "nuc980.dtsi"
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/leds/common.h>
+
+/ {
+	aliases: aliases {
+		serial0 = &uart0;
+		serial1 = &uart1;
+		serial2 = &uart2;
+		serial3 = &uart3;
+		serial4 = &uart4;
+		serial5 = &uart5;
+		serial6 = &uart6;
+		serial7 = &uart7;
+		serial8 = &uart8;
+		serial9 = &uart9;
+		i2c1 = &i2c1;
+		spi0 = &spi0;
+		spi1 = &spi1;
+		spi2 = &qspi;
+		ethernet0 = &emac0;
+		filesystem = &filesystem;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,115200n8 earlycon";
+		stdout-path = "serial0";
+		linux,initrd-start = <0xFFFFFFFF>;         // placeholder, bootloader sets correct values
+		linux,initrd-end = <0xFFFFFFFF>;           // placeholder, bootloader sets correct values
+		foxiot,pwron = <0>;                        // placeholder, bootloader sets correct values
+		foxiot,filesystem-start = <0x00000000>;    // placeholder, bootloader sets correct values
+		foxiot,filesystem-end = <0x00000000>;      // placeholder, bootloader sets correct values
+	};
+
+	supply_fixed_12v: supply_fixed_12v {
+		compatible = "regulator-fixed";
+		regulator-name = "supply-fixed-12v";
+		regulator-min-microvolt = <12000000>;
+		regulator-max-microvolt = <12000000>;
+		regulator-always-on;
+	};
+
+	supply_fixed_5v0: supply_fixed_5v0 {
+		compatible = "regulator-fixed";
+		regulator-name = "supply-fixed-5v0";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&supply_fixed_12v>;
+		regulator-always-on;
+	};
+
+	supply_fixed_1v2: supply_fixed_1v2 {
+		compatible = "regulator-fixed";
+		regulator-name = "supply-fixed-1v2";
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		vin-supply = <&supply_fixed_5v0>;
+		regulator-always-on;
+	};
+
+	supply_fixed_1v8: supply_fixed_1v8 {
+		compatible = "regulator-fixed";
+		regulator-name = "supply-fixed-1v8";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		vin-supply = <&supply_fixed_5v0>;
+		regulator-always-on;
+	};
+
+	supply_fixed_3v3: supply_fixed_3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "supply-fixed-3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		vin-supply = <&supply_fixed_5v0>;
+		regulator-always-on;
+	};
+
+	voltage {
+		compatible = "voltage-divider";
+		io-channels = <&adc 2>;
+		output-ohms = <10000>;
+		full-ohms = <110000>;
+	};
+
+	thermistor: thermal-sensor {
+		compatible = "generic-adc-thermal";
+		io-channels = <&adc 0>;
+		io-channel-names = "sensor-channel";
+		#thermal-sensor-cells = <0>;
+		temperature-lookup-table = <	125000 3004
+						95000 2968
+						90000 2926
+						85000 2879
+						80000 2825
+						75000 2765
+						70000 2696
+						65000 2619
+						60000 2533
+						55000 2436
+						50000 2329
+						45000 2212
+						40000 2085
+						35000 1948
+						30000 1802
+						25000 1650
+						20000 1493
+						15000 1334
+						10000 1177
+						5000 1024
+						0 879
+						(-5000) 744
+						(-10000) 620
+						(-15000) 510
+						(-20000) 414
+						(-25000) 331
+						(-30000) 261
+						(-35000) 203
+						(-40000) 156>;
+	};
+
+	thermal-zones {
+		board {
+			polling-delay = <15000>;
+			polling-delay-passive = <0>;
+			thermal-sensors = <&thermistor>;
+			trips {
+				dummy {
+					temperature = <70000>;
+					hysteresis = <2000>;
+					type = "passive";
+				};
+			};
+		};
+	};
+
+	i2c1: i2c1 {
+		compatible = "i2c-gpio";
+		scl-gpios = <&gpioC 3 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		sda-gpios = <&gpioC 4 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		clock-frequency = <400000>;
+		pinctrl-0 = <&pinctrl_i2c1>;
+		pinctrl-names = "default";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		eeprom@50 {
+			compatible = "microchip,24aa02e48", "atmel,24c02";
+			reg = <0x50>;
+			pagesize = <8>;
+			vcc-supply = <&supply_fixed_3v3>;
+			#address-cells = <1>;
+			#size-cells = <1>;
+			mac_address0: mac_address@fa {
+				reg = <0xfa 0x06>;
+			};
+		};
+	};
+
+	leds0: leds0 {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_leds0>;
+
+		eledg {
+			gpios = <&gpioG 5 GPIO_ACTIVE_HIGH>;
+			color = <LED_COLOR_ID_GREEN>;
+			function = LED_FUNCTION_LAN;
+		};
+
+		eleda {
+			gpios = <&gpioG 6 GPIO_ACTIVE_HIGH>;
+			color = <LED_COLOR_ID_AMBER>;
+			function = LED_FUNCTION_LAN;
+		};
+
+		ledg {
+			gpios = <&gpioD 12 GPIO_ACTIVE_HIGH>;
+			color = <LED_COLOR_ID_GREEN>;
+			function = LED_FUNCTION_DEBUG;
+		};
+
+		ledy {
+			gpios = <&gpioD 13 GPIO_ACTIVE_HIGH>;
+			color = <LED_COLOR_ID_YELLOW>;
+			function = LED_FUNCTION_DEBUG;
+		};
+	};
+};
+
+&qspi {
+	num-cs = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_qspi>;
+	status = "okay";
+	flash: flash@0 {
+		compatible = "spi-nand";
+		reg = <0>;
+		spi-max-frequency = <50000000>;
+		spi-rx-bus-width = <4>;
+	//	spi-tx-bus-width = <4>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		bootloader: partition@0 {
+			label = "bootloader";
+			reg = <0x0 0x40000>;
+			read-only;
+		};
+		firmware: firmware@40000 {
+			label = "firmware";
+			reg = <0x40000 0x1000000>;
+			read-only;
+		};
+		update: update@1040000 {
+			label = "update";
+			reg = <0x1040000 0x1000000>;
+		};
+		filesystem: filesystem {
+			label = "filesystem";
+			reg = <0x40000 0x100000>; // placeholder, bootloader sets correct values
+			read-only;
+		};
+		ubi: ubi@2040000 {
+			label = "ubi";
+			reg = <0x2040000 0x5fc0000>;
+		};
+	};
+};
+
+&wdt {
+	status = "okay";
+};
+
+&rtc {
+	status = "okay";
+};
+
+&adc {
+	avdd-supply = <&supply_fixed_3v3>;
+	vref-supply = <&supply_fixed_3v3>;
+	status = "okay";
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart0>;
+	status = "okay";
+};
+
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart2>;
+	dtr-gpios = <&gpioA 11 GPIO_ACTIVE_LOW>;
+	rng-gpios = <&gpioA 12 GPIO_ACTIVE_LOW>;
+	status = "disabled";
+};
+
+&uart8 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart8>;
+	// rts-gpios = <&gpioA 10 GPIO_ACTIVE_LOW>;
+	// cts-gpios = <&gpioA 9 GPIO_ACTIVE_LOW>;
+	status = "disabled";
+};
+
+&rng {
+	status = "okay";
+};
+
+&sd0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_sd0>;
+	bus-width = <4>;
+	disable-wp;
+	status = "okay";
+};
+
+&pinctrl {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_default>;
+
+	pinctrl_default: pinctrl_default {
+		thermistor {
+			pins = "PB0";
+			function = "mfp8";
+			input-disable;
+		};
+		voltage {
+			pins = "PB2";
+			function = "mfp8";
+			input-disable;
+		};
+		perst {
+			pins = "PG15";
+			function = "mfp0";
+			drive-open-drain;
+			output-high;
+		};
+		button {
+			pins = "PA6";
+			function = "mfp0";
+			bias-pull-up;
+			input-schmitt-enable = <1>;
+			input-debounce = <1>;
+		};
+	};
+
+	pinctrl_leds0: pinctrl_leds0 {
+		leds {
+			pins = "PG5", "PG6", "PD12", "PD13";
+			function = "mfp0";
+			drive-push-pull;
+		};
+	};
+
+	pinctrl_i2c1: pinctrl_i2c1 {
+		i2c_gpio {
+			pins = "PC3", "PC4";
+			function = "mfp0";
+			drive-open-drain;
+		};
+	};
+
+	pinctrl_uart0: pinctrl_uart0 {
+		uart {
+			pins = "PF11", "PF12";
+			function = "mfp1";
+		};
+	};
+
+	pinctrl_uart2: pinctrl_uart2 {
+		uart {
+			pins = "PA7", "PA8", "PA9", "PA10";
+			function = "mfp2";
+		};
+		modem {
+			pins = "PA11", "PA12";
+			functions = "mfp0";
+		};
+	};
+
+	pinctrl_uart8: pinctrl_uart8 {
+		uart {
+			pins = "PA11", "PA12";
+			function = "mfp2";
+		};
+		modem {
+			pins = "PA9", "PA10";
+			functions = "mfp0";
+		};
+	};
+
+	pinctrl_emac0: pinctrl_emac0 {
+		emac {
+			pins = "PE0", "PE1", "PE2", "PE3", "PE4", "PE5", "PE6", "PE7", "PE8", "PE9";
+			function = "mfp1";
+		};
+		reset {
+			pins = "PG7";
+			function = "mfp0";
+		};
+	};
+
+	pinctrl_qspi: pinctrl_qspi {
+		qspi {
+			pins = "PD2", "PD3", "PD4", "PD5", "PD6", "PD7";
+			function = "mfp1";
+			drive-push-pull;
+		};
+	};
+
+	pinctrl_sd0: pinctrl_sd0 {
+		sdio {
+			pins = "PC5", "PC6", "PC7", "PC8", "PC9", "PC10";
+			function = "mfp6";
+		};
+		cd {
+			pins = "PC12";
+			function = "mfp6";
+			bias-pull-up;
+		};
+	};
+};
+
+&ehci0 {
+	status = "okay";
+};
+
+&ohci0 {
+	status = "okay";
+};
+
+&emac0 {
+	phy-handle = <&phy0>;
+	phy-connection-type = "rmii";
+	nvmem-cells = <&mac_address0>;
+	nvmem-cell-names = "mac-address";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_emac0>;
+	status = "okay";
+	mdio-bus {
+		reset-gpios = <&gpioG 7 GPIO_ACTIVE_LOW>;
+		reset-delay-us = <500>;
+		phy0: phy@0 {
+			reg = <0>;
+		};
+	};
+};
+

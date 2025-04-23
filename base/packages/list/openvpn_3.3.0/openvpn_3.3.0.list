@@ -1,0 +1,12 @@
+dir /bin 755 0 0
+file /bin/openvpn ${ROOT}/bin/openvpn 755 0 0
+slink /sbin/ifconfig /bin/busybox 777 0 0
+slink /sbin/route /bin/busybox 777 0 0
+
+dir /lib 755 0 0
+file /lib/libcrypto.so.3 ${ROOT}/lib/libcrypto.so.3 755 0 0
+file /lib/libssl.so.3 ${ROOT}/lib/libssl.so.3 755 0 0
+file /lib/libnl-genl-3.so.200 ${ROOT}/lib/libnl-genl-3.so.200 755 0 0
+file /lib/libcap-ng.so.0 ${ROOT}/lib/libcap-ng.so.0 755 0 0
+file /lib/libnl-3.so.200 ${ROOT}/lib/libnl-3.so.200 755 0 0
+

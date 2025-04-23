@@ -1,0 +1,11 @@
+dir /bin 755 0 0
+file /bin/flash_erase ${ROOT}/bin/flash_erase 755 0 0
+file /bin/mkfs.ubifs ${ROOT}/bin/mkfs.ubifs 755 0 0
+file /bin/ubiattach ${ROOT}/bin/ubiattach 755 0 0
+file /bin/ubidetach ${ROOT}/bin/ubidetach 755 0 0
+file /bin/ubiformat ${ROOT}/bin/ubiformat 755 0 0
+file /bin/ubimkvol ${ROOT}/bin/ubimkvol 755 0 0
+file /bin/ubinfo ${ROOT}/bin/ubinfo 755 0 0
+file /bin/ubirename ${ROOT}/bin/ubirename 755 0 0
+file /bin/ubirmvol ${ROOT}/bin/ubirmvol 755 0 0
+

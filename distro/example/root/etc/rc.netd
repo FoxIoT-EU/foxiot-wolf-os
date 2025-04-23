@@ -1,0 +1,25 @@
+#!/bin/sh
+
+readonly DEFAULT_CONF_FILE=/etc/netd.conf
+readonly USER_CONF_FILE=/mnt/rwdata/app/netd.conf
+readonly USER_CONF_RO_FILE=/mnt/rodata/netd/netd.conf
+
+if [ -f $USER_CONF_FILE ]; then
+	CONF_FILE=$USER_CONF_FILE
+elif [ -f $USER_CONF_RO_FILE ]; then
+	CONF_FILE=$USER_CONF_RO_FILE
+elif [ -f $DEFAULT_CONF_FILE ]; then
+	CONF_FILE=$DEFAULT_CONF_FILE
+else
+	exit 1
+fi
+
+#start netd
+while true; do
+	# wwan0 interface must be down before netd starts
+	ifconfig wwan0 down
+	sleep 1
+	/bin/netd $CONF_FILE
+	sleep 10
+done
+

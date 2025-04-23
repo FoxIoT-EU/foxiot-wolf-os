@@ -1,0 +1,17 @@
+dir /etc 755 0 0
+dir /etc/ssl 755 0 0
+dir /etc/ssl/certs 755 0 0
+file /etc/ssl/certs/cacert.pem ${ROOT}/etc/ssl/certs/cacert.pem 644 0 0
+
+dir /bin 755 0 0
+file /bin/curl ${ROOT}/bin/curl 755 0 0
+
+dir /lib 755 0 0
+file /lib/libcurl.so.4.5.0 ${ROOT}/lib/libcurl.so.4.5.0 755 0 0
+slink /lib/libcurl.so.4 /lib/libcurl.so.4.5.0 777 0 0
+slink /lib/libcurl.so /lib/libcurl.so.4 777 0 0
+
+file /lib/libssh2.so.1.0.1 ${ROOT}/lib/libssh2.so.1.0.1 755 0 0
+slink /lib/libssh2.so.1 /lib/libssh2.so.1.0.1 777 0 0
+slink /lib/libssh2.so /lib/libssh2.so.1.0.1 777 0 0
+

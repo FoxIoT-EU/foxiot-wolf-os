@@ -1,0 +1,100 @@
+dir /dev 755 0 0
+nod /dev/console 644 0 0 c 5 1
+nod /dev/ttyinit 644 0 0 c 204 40
+
+dir /proc 755 0 0
+dir /sys 755 0 0
+dir /tmp 1777 0 0
+
+dir /etc 755 0 0
+file /etc/rc.init ${ROOT}/etc/rc.init 755 0 0
+slink /etc/mtab /proc/mounts 777 0 0
+file /etc/profile ${ROOT}/etc/profile 644 0 0
+file /etc/resolv.conf.static ${ROOT}/etc/resolv.conf.static 644 0 0
+file /etc/netd.sh ${ROOT}/etc/netd.sh 755 0 0
+dir /etc/dropbear 755 0 0
+file /etc/passwd ${ROOT}/etc/passwd 644 0 0
+file /etc/group ${ROOT}/etc/group 644 0 0
+file /etc/TZ ${ROOT}/etc/TZ 644 0 0
+file /etc/adjtime ${ROOT}/etc/adjtime 644 0 0
+file /etc/netd.conf ${ROOT}/etc/netd.conf 644 0 0
+
+dir /etc/gpiod.d 755 0 0
+
+dir /bin 755 0 0
+slink /sbin /bin 777 0 0
+dir /usr 755 0 0
+#slink /usr/bin /bin 777 0 0
+slink /usr/sbin /bin 777 0 0
+file /bin/busybox ${ROOT}/bin/busybox 755 0 0
+slink /bin/sh /bin/busybox 777 0 0
+slink /bin/fuser /bin/busybox 777 0 0
+slink /bin/login /bin/busybox 777 0 0
+file /bin/reboot ${ROOT}/bin/reboot 755 0 0
+file /bin/ntpclient ${ROOT}/bin/ntpclient 755 0 0
+file /bin/dropbear ${ROOT}/bin/dropbear 755 0 0
+file /bin/dropbearkey ${ROOT}/bin/dropbearkey 755 0 0
+file /bin/dbclient ${ROOT}/bin/dbclient 755 0 0
+file /bin/scp ${ROOT}/bin/scp 755 0 0
+slink /bin/ssh /bin/dbclient 777 0 0
+file /bin/dmesg ${ROOT}/bin/dmesg 755 0 0
+file /bin/rcomm ${ROOT}/bin/rcomm 755 0 0
+file /bin/gpiod ${ROOT}/bin/gpiod 755 0 0
+file /bin/gpiodset ${ROOT}/bin/gpiodset 755 0 0
+file /bin/gpiodetect ${ROOT}/bin/gpiodetect 755 0 0
+file /bin/gpiofind ${ROOT}/bin/gpiofind 755 0 0
+file /bin/gpioget ${ROOT}/bin/gpioget 755 0 0
+file /bin/gpioinfo ${ROOT}/bin/gpioinfo 755 0 0
+file /bin/gpiomon ${ROOT}/bin/gpiomon 755 0 0
+file /bin/gpioset ${ROOT}/bin/gpioset 755 0 0
+file /bin/netd ${ROOT}/bin/netd 755 0 0
+slink /bin/netdc /bin/netd 777 0 0
+file /bin/gpioexport ${ROOT}/bin/gpioexport 755 0 0
+file /bin/gpiounexport ${ROOT}/bin/gpiounexport 755 0 0
+file /bin/mdns ${ROOT}/bin/mdns 755 0 0
+file /bin/ldd ${ROOT}/bin/ldd 755 0 0
+file /bin/watchdogd ${ROOT}/bin/watchdogd 755 0 0
+
+dir /lib 755 0 0
+file /lib/ld-linux.so.3 ${ROOT}/lib/ld-linux.so.3 755 0 0
+file /lib/libc.so.6 ${ROOT}/lib/libc.so.6 755 0 0
+slink /lib/libc.so /lib/libc.so.6 777 0 0
+file /lib/libgcc_s.so.1 ${ROOT}/lib/libgcc_s.so.1 755 0 0
+slink /lib/libgcc_s.so /lib/libgcc_s.so.1 777 0 0
+file /lib/libm.so.6 ${ROOT}/lib/libm.so.6 755 0 0
+slink /lib/libm.so /lib/libm.so.6 777 0 0
+file /lib/libdl.so.2 ${ROOT}/lib/libdl.so.2 755 0 0
+slink /lib/libdl.so /lib/libdl.so.2 777 0 0
+file /lib/libresolv.so.2 ${ROOT}/lib/libresolv.so.2 755 0 0
+slink /lib/libresolv.so /lib/libresolv.so.2 777 0 0
+file /lib/libnss_dns.so.2 ${ROOT}/lib/libnss_dns.so.2 755 0 0
+slink /lib/libnss_dns.so /lib/libnss_dns.so.2 777 0 0
+file /lib/libnss_files.so.2 ${ROOT}/lib/libnss_files.so.2 755 0 0
+slink /lib/libnss_files.so /lib/libnss_files.so.2 777 0 0
+file /lib/libpthread.so.0 ${ROOT}/lib/libpthread.so.0 755 0 0
+slink /lib/libpthread.so /lib/libpthread.so.0 777 0 0
+file /lib/librt.so.1 ${ROOT}/lib/librt.so.1 755 0 0
+slink /lib/librt.so /lib/librt.so.1 777 0 0
+file /lib/libutil.so.1 ${ROOT}/lib/libutil.so.1 755 0 0
+slink /lib/libutil.so /lib/libutil.so.1 777 0 0
+file /lib/libcrypt.so.1.1.0 ${ROOT}/lib/libcrypt.so.1.1.0 755 0 0
+slink /lib/libcrypt.so.1 /lib/libcrypt.so.1.1.0 777 0 0
+slink /lib/libcrypt.so /lib/libcrypt.so.1 777 0 0
+file /lib/libgpiod.so.2.2.0 ${ROOT}/lib/libgpiod.so.2.2.0 755 0 0
+slink /lib/libgpiod.so.2 /lib/libgpiod.so.2.2.0 777 0 0
+slink /lib/libgpiod.so /lib/libgpiod.so.2 777 0 0
+file /lib/libatomic.so.1.2.0 ${ROOT}/lib/libatomic.so.1.2.0 755 0 0
+slink /lib/libatomic.so.1 /lib/libatomic.so.1.2.0 777 0 0
+
+dir /var 755 0 0
+dir /var/lib 755 0 0
+dir /var/lib/hwclock 755 0 0
+slink /var/lib/hwclock/adjtime /etc/adjtime 777 0 0
+dir /var/run 755 0 0
+
+dir /mnt 755 0 0
+
+dir /root 755 0 0
+
+dir /opt 755 0 0
+

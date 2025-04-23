@@ -1,0 +1,4 @@
+#include "init.list"
+dir /rootfs 755 0 0
+dir /overlayfs 755 0 0
+

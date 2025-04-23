@@ -1,0 +1,9 @@
+#!/bin/sh
+ 
+REG=`devmem 0xb0004010`
+button=`echo $(((($REG>>6)&1)^1))`
+if [ "$button" -eq "1" ]; then
+	exit 1
+fi
+exit 0
+

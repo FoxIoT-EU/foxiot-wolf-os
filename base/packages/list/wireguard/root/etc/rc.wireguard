@@ -1,0 +1,66 @@
+#!/bin/sh
+
+readonly WG_CONF_PATH="$1"
+
+# Validate input arguments
+if [ ! "$WG_CONF_PATH" ]; then
+	echo -e "Usage:\n\t$0 <configuration file>"
+	exit 1
+fi
+
+if [ ! -f "$WG_CONF_PATH" ]; then
+	echo -e "Usage:\n\t$0 <configuration file>"
+	exit 1
+fi
+
+# Retrive IP address
+ADDR=$(grep Address < "$WG_CONF_PATH")
+if [ -z "$ADDR" ]; then
+	echo "Failed to find the 'Address' field in the file: $WG_CONF_PATH"
+	exit 1
+fi
+ADDR=${ADDR%/*}
+ADDR=${ADDR#*= }
+
+# Get interface name
+IFACE=${WG_CONF_PATH%.*}
+IFACE=${IFACE##*/}
+
+# Generate configuration for WireGuard
+grep "\[Interface]\|PrivateKey\|\[Peer]\|PublicKey\|AllowedIPs\|Endpoint\|PersistentKeepalive\|PresharedKey" < "$WG_CONF_PATH" > /tmp/."$IFACE"
+
+# Create network interface
+wg_if add "$IFACE"
+ifconfig "$IFACE" "$ADDR" mtu 1280
+sleep 5
+
+# Create routes
+ALLOWED_IPS=$(grep AllowedIPs < "$WG_CONF_PATH")
+if [ -z "$ADDR" ]; then
+	echo "Failed to find the 'AllowedIPs' field in the file: $WG_CONF_PATH"
+	exit 1
+fi
+ALLOWED_IPS=${ALLOWED_IPS##*=}
+ALLOWED_IPS=${ALLOWED_IPS//,}
+
+for i in ${ALLOWED_IPS}; do
+	route add -net "$i" "$IFACE"
+done
+
+# Apply newly created configuration file to a WireGuard interface
+_CNT=0
+while true; do
+	if wg setconf "$IFACE" /tmp/."$IFACE"; then
+		break
+	fi
+	
+	if [ $_CNT -gt 5 ]; then
+		echo "Failed to set WireGuard configuration"
+		exit 1
+	fi
+	_CNT=$((_CNT + 1))
+	
+	sleep 10
+done
+
+exit 0

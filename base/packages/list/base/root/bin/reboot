@@ -1,0 +1,46 @@
+#!/bin/sh
+
+readonly MAGIC_VALUE="fox:reboot:4328943287432"
+
+kill_processes()
+{
+	local ppid=$1
+	local sig=$2
+	
+	local pids=$(pgrep -P$ppid) || return
+	for p in $pids; do
+		local pid=$p
+		kill_processes $pid $sig
+		
+		if [ $pid != $MY_PID ] && [ $pid != 1 ]; then
+			kill -${sig} $pid
+		fi
+	done
+}
+
+do_reboot() {
+	MY_PID=$$
+	kill_processes 1 15
+	sleep 5
+	kill_processes 1 9
+	sleep 1
+
+	sync
+	umount /mnt/rodata
+	umount /mnt/rwdata
+	
+	sync
+	echo b >/proc/sysrq-trigger
+}
+
+# The MAGIC value is used to ensure that the script can run in the background
+# without being terminated when the session is closed. This is necessary to
+# prevent the system from killing the script due to the session ending.
+if [ "$MAGIC_VALUE" = "$MAGIC" ]; then
+	do_reboot
+	exit 0
+else
+	export MAGIC=$MAGIC_VALUE
+	reboot > /dev/null 2>&1 &
+fi
+

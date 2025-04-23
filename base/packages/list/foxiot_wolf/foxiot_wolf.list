@@ -1,0 +1,11 @@
+dir /etc 755 0 0
+
+dir /etc/gpiod.d 755 0 0
+file /etc/gpiod.d/foxiot_wolf.conf ${ROOT}/etc/gpiod.d/foxiot_wolf.conf 644 0 0
+
+dir /bin 755 0 0
+file /bin/button ${ROOT}/bin/button 755 0 0
+file /bin/install ${ROOT}/bin/install 755 0 0
+file /bin/temperature ${ROOT}/bin/temperature 755 0 0
+file /bin/voltage ${ROOT}/bin/voltage 755 0 0
+

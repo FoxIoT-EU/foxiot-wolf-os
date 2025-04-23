@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Note: To convert a raw value to standard units, the IIO defines this formula: Scaled value = (raw + offset) * scale
+echo "`cat /sys/devices/platform/apb/b0043000.adc/iio:device0/in_voltage2_raw` * 36.3 / 4096" | bc -l
+

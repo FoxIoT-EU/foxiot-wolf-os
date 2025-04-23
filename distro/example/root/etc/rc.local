@@ -1,0 +1,99 @@
+#!/bin/sh
+
+# Start watchdog
+/bin/watchdogd > /dev/null 2>&1 &
+
+# Panic on out-of-memory
+echo 1 > /proc/sys/vm/panic_on_oom
+
+# Setting up DNS
+/etc/netd.sh dns eth0 "$(cat /etc/resolv.conf.static)"
+
+# Setting eth0 interface up
+ifconfig eth0 up
+
+# Setting hostname  
+mac=$(cat /sys/class/net/eth0/address)
+mac=${mac//:/}
+echo "wolf-$mac" > /proc/sys/kernel/hostname
+
+# Get reset source status
+RESET_REG=$(devmem 0xB000006C)
+RESET_STATUS="unknown"
+if [ $(( RESET_REG & 0x01 )) -ne 0 ]; then
+	RESET_STATUS="power"
+elif [ $(( RESET_REG & 0x02 )) -ne 0 ]; then
+	RESET_STATUS="reset pin"
+elif [ $(( RESET_REG & 0x04 )) -ne 0 ]; then
+	RESET_STATUS="low voltage"
+elif [ $(( RESET_REG & 0x08 )) -ne 0 ]; then
+	RESET_STATUS="reboot"
+elif [ $(( RESET_REG & 0x10 )) -ne 0 ]; then
+	RESET_STATUS="CPU"
+elif [ $(( RESET_REG & 0x20 )) -ne 0 ]; then
+	RESET_STATUS="watchdog"
+fi 
+# Clear reset register
+devmem 0xB000006C 32 0xFF
+# Write status to file
+echo -ne $RESET_STATUS > /run/wolf/reset_source
+
+# Apply firewall - drop all Incoming port expect SSH
+/etc/firewall
+
+# Start connection monitor
+/etc/conn-monitor.sh >/dev/null 2>&1 &
+
+# Mount read-only NAND flash
+ubiattach /dev/ubi_ctrl -p /dev/mtd4
+mount -t ubifs -r /dev/ubi0_0 /mnt/rodata
+
+# Start WireGuard
+/etc/rc.wireguard /mnt/rodata/wireguard/wg0.conf > /dev/null 2>&1 &
+
+# Mount writable NAND flash
+ubiattach /dev/ubi_ctrl -p /dev/mtd5
+mount -t ubifs /dev/ubi1_0 /mnt/rwdata
+
+# Start dropbear
+/etc/rc.dropbear > /dev/null 2>&1 &
+
+# Mount SD card
+if [ -b /dev/mmcblk0p1 ]; then
+	fsck.ext4 -y /dev/mmcblk0p1
+	mkdir /mnt/sdcard
+	mount -o noatime,nodiratime,lazytime /dev/mmcblk0p1 /mnt/sdcard/ && touch /mnt/sdcard/mounted
+fi
+
+# Start netd
+/etc/rc.netd > /dev/null 2>&1 &
+
+# Sync time and start chrony
+mkdir -p /var/lib/chrony
+touch /var/lib/chrony/drift
+
+for j in $(seq 0 5); do
+	for i in $(pidof chronyd); do
+		kill -9 "$i"
+		sleep 1
+	done
+
+	if chronyd -t10 -q > /dev/null 2>&1; then
+		break
+	fi
+	sleep 2
+done
+chronyd
+
+# Execute rc.local script from read-only partition
+if [ -x /mnt/rodata/rc.local ] ; then
+        /mnt/rodata/rc.local 2>&1
+fi
+
+# Execute rc.local script from writable partition
+if [ -x /mnt/rwdata/rc.local ] ; then
+        /mnt/rwdata/rc.local 2>&1
+fi
+
+exit 0
+

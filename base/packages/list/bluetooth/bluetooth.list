@@ -1,0 +1,16 @@
+dir /bin 755 0 0
+file /bin/hciconfig ${ROOT}/bin/hciconfig 755 0 0
+file /bin/hcitool ${ROOT}/bin/hcitool 755 0 0
+
+dir /lib 755 0 0
+file /lib/libbluetooth.so.3.19.2 ${ROOT}/lib/libbluetooth.so.3.19.2 755 0 0
+slink /lib/libbluetooth.so.3 /lib/libbluetooth.so.3.19.2 777 0 0
+slink /lib/libbluetooth.so /lib/libbluetooth.so.3 777 0 0
+
+dir /lib/firmware 755 0 0
+dir /lib/firmware/rtl_bt 755 0 0
+file /lib/firmware/rtl_bt/rtl8723b_fw.bin ${ROOT}/lib/firmware/rtl_bt/rtl8723b_fw.bin 644 0 0
+file /lib/firmware/rtl_bt/rtl8723b_config.bin ${ROOT}/lib/firmware/rtl_bt/rtl8723b_config.bin 644 0 0
+file /lib/firmware/rtl_bt/rtl8821c_fw.bin ${ROOT}/lib/firmware/rtl_bt/rtl8821c_fw.bin 644 0 0
+file /lib/firmware/rtl_bt/rtl8821c_config.bin ${ROOT}/lib/firmware/rtl_bt/rtl8821c_config.bin 644 0 0
+

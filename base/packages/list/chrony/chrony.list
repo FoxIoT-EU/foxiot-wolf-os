@@ -1,0 +1,4 @@
+file /etc/chrony.conf ${ROOT}/etc/chrony.conf 755 0 0
+
+file /bin/chronyd ${ROOT}/bin/chronyd 755 0 0
+file /bin/chronyc ${ROOT}/bin/chronyc 755 0 0

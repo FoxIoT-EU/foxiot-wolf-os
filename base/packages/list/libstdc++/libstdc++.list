@@ -1,0 +1,5 @@
+dir /lib 755 0 0
+file /lib/libstdc++.so.6.0.28 ${ROOT}/lib/libstdc++.so.6.0.28 755 0 0
+slink /lib/libstdc++.so.6 /lib/libstdc++.so.6.0.28 777 0 0
+slink /lib/libstdc++.so /lib/libstdc++.so.6 777 0 0
+

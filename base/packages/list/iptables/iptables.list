@@ -1,0 +1,22 @@
+dir /bin 755 0 0
+file /bin/iptables ${ROOT}/bin/iptables 755 0 0
+
+dir /lib 755 0 0
+file /lib/libip4tc.so.2.0.0 ${ROOT}/lib/libip4tc.so.2.0.0 755 0 0
+slink /lib/libip4tc.so.2 /lib/libip4tc.so.2.0.0 777 0 0
+slink /lib/libip4tc.so /lib/libip4tc.so.2.0.0 777 0 0
+
+file /lib/libip6tc.so.2.0.0 ${ROOT}/lib/libip6tc.so.2.0.0 755 0 0
+slink /lib/libip6tc.so.2 /lib/libip6tc.so.2.0.0 777 0 0
+slink /lib/libip6tc.so /lib/libip6tc.so.2.0.0 777 0 0
+
+file /lib/libxtables.so.12.4.0 ${ROOT}/lib/libxtables.so.12.4.0 755 0 0
+slink /lib/libxtables.so.12 /lib/libxtables.so.12.4.0 777 0 0
+slink /lib/libxtables.so /lib/libxtables.so.12.4.0 777 0 0
+
+
+
+
+
+
+

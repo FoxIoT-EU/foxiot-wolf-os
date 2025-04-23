@@ -1,0 +1,13 @@
+OpenSSL
+
+./Configure --prefix=/tmp/ssl --openssldir=/tmp/ssl '-Wl,-rpath,$(LIBRPATH)'
+CFLAGS="-Os" ./Configure linux-armv4 no-asm no-ssl3 no-ssl2 no-tls1 no-tls1_1 no-comp no-dso no-async --cross-compile-prefix=arm-linux-gnueabi-
+make -j8
+arm-none-eabi-strip *.so.3
+
+OpenVPN
+
+autoreconf -i
+CFLAGS="-Os" PKG_CONFIG_PATH=/data/testing/openvpn/openssl:$PKG_CONFIG_PATH CFLAGS="-I/data/testing/openvpn/openssl/include" LDFLAGS="-L/data/testing/openvpn/openssl/lib" ./configure --host=arm-linux-gnueabi --disable-plugins --disable-management --disable-debug --disable-plugin-auth-pam
+make -j8
+arm-linux-gnueabi-strip src/openvpn/openvpn

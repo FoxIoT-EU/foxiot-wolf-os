@@ -1,0 +1,30 @@
+#!/bin/sh
+
+echo 0 >/proc/sys/kernel/printk
+echo 2048 >/proc/sys/vm/min_free_kbytes
+
+ln -sf /dev/ttyS0 /dev/ttyinit
+mkdir /dev/pts
+mount -t devpts none /dev/pts
+mount -t sysfs none /sys
+mount -t debugfs none /sys/kernel/debug
+mount -t configfs none /sys/kernel/config
+
+echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+ifconfig lo 127.0.0.1
+
+/bin/gpiod >/dev/null 2>&1 &
+
+echo netdev >/sys/class/leds/amber:lan/trigger
+echo 1 >/sys/class/leds/amber:lan/link
+echo eth0 >/sys/class/leds/amber:lan/device_name
+
+echo netdev >/sys/class/leds/green:lan/trigger
+echo 1 >/sys/class/leds/green:lan/rx
+echo 1 >/sys/class/leds/green:lan/tx
+echo eth0 >/sys/class/leds/green:lan/device_name
+
+echo heartbeat >/sys/class/leds/green:debug/trigger
+if [ -x /etc/rc.local ] ; then /etc/rc.local ; fi
+

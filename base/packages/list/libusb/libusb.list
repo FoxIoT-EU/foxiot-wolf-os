@@ -1,0 +1,4 @@
+dir /lib 755 0 0
+file /lib/libusb-1.0.so.0.2.0 ${ROOT}/lib/libusb-1.0.so.0.2.0 755 0 0
+slink /lib/libusb-1.0.so.0 /lib/libusb-1.0.so.0.2.0 777 0 0
+slink /lib/libusb-1.0.so /lib/libusb-1.0.so.0 777 0 0

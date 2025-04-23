@@ -1,0 +1,15 @@
+dir /etc 755 0 0
+dir /etc/ppp 755 0 0
+slink /etc/ppp/auth-up /bin/netdc 777 0 0
+slink /etc/ppp/auth-down /bin/netdc 777 0 0
+slink /etc/ppp/ip-pre-up /bin/netdc 777 0 0
+slink /etc/ppp/ip-up /bin/netdc 777 0 0
+slink /etc/ppp/ip-down /bin/netdc 777 0 0
+slink /etc/ppp/ipv6-up /bin/netdc 777 0 0
+slink /etc/ppp/ipv6-down /bin/netdc 777 0 0
+slink /etc/ppp/ipx-up /bin/netdc 777 0 0
+slink /etc/ppp/ipx-down /bin/netdc 777 0 0
+
+dir /bin 755 0 0
+file /bin/pppd ${ROOT}/bin/pppd 755 0 0
+

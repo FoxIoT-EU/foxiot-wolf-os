@@ -1,0 +1,21 @@
+#!/bin/sh
+# fdev is a kernel hotplug helper. To activate it:
+# echo /sbin/fdev >/proc/sys/kernel/hotplug
+
+# Use a well-named serial device for communication with Quectel EC25 Modem via AT commands 
+if [ "$SUBSYSTEM" != "tty" ] || [ "$ACTION" != "add" ]; then exit 1; fi
+if [ -z "$DEVNAME" ] || [ -z "$DEVPATH" ]; then exit 2; fi
+
+ID_PRODUCT=$(cat /sys$DEVPATH/../../../../idProduct)
+ID_VENDOR=$(cat /sys$DEVPATH/../../../../idVendor)
+if [ $ID_PRODUCT = "0125" ] && [ $ID_VENDOR = "2c7c" ]; then
+	B_INTERFACE_NUBER=$(cat /sys$DEVPATH/../../../bInterfaceNumber)
+	if [ $B_INTERFACE_NUBER == "05" ]; then
+		ln -sf /dev/$DEVNAME /dev/modemUser
+	elif [ $B_INTERFACE_NUBER == "04" ]; then
+		ln -sf /dev/$DEVNAME /dev/modemSystem
+	fi
+fi
+
+exit 0
+

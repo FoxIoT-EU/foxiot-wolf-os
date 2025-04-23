@@ -1,0 +1,110 @@
+/dts-v1/;
+
+#include "foxiot_wolf.dts"
+
+&aliases {
+	i2c0 = &i2c0;
+};
+
+&uart2 {
+	status = "okay";
+};
+
+&uart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart6>;
+	linux,rs485-enabled-at-boot-time;
+	status = "okay";
+};
+
+&uart8 {
+	status = "disabled";
+};
+
+/ {
+	i2c0: i2c0 {
+		compatible = "i2c-gpio";
+		scl-gpios = <&gpioA 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		sda-gpios = <&gpioA 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		clock-frequency = <100000>;
+		pinctrl-0 = <&pinctrl_i2c0>;
+		pinctrl-names = "default";
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+	
+	supply_8DiDoAn1Ro_10v9: supply_8DiDoAn1Ro_10v9 {
+		compatible = "regulator-fixed";
+		regulator-name = "supply-8DiDoAn1Ro-10v";
+		regulator-min-microvolt = <10974419>;
+		regulator-max-microvolt = <10974419>;
+		regulator-always-on;
+	};
+};
+
+&spi1 {
+	num-cs = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_spi1>;
+	cs-gpios = <0>, <&gpioB 1 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	adc@0 {
+		compatible = "ti,adc108s102";
+		reg = <0>;
+		spi-max-frequency = <100000>;
+		vref-supply = <&supply_8DiDoAn1Ro_10v9>;
+	};
+	gpio@1 {
+		compatible = "fairchild,74hc595";
+		reg = <1>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		registers-number = <1>;
+		spi-max-frequency = <100000>;
+		enable-gpios = <&gpioB 3 GPIO_ACTIVE_LOW>;
+	};
+};
+
+&pinctrl_default {
+	8dio {
+		pins = "PB6", "PB4", "PB7", "PB5", "PF1", "PF0", "PF2", "PF3";
+		function = "mfp0";
+		input-schmitt-enable = <1>;
+	};
+};
+
+&pinctrl {
+	pinctrl_uart6: pinctrl_uart6 {
+		pins = "PA3", "PA4", "PA5";
+		function = "mfp1";
+		bias-pull-up;
+	};
+	pinctrl_spi1: pinctrl_spi1 {
+		spi {
+			pins = "PG11", "PG12", "PG13", "PG14";
+			function = "mfp2";
+		};
+		cs1 {
+			pins = "PB1";
+			function = "mfp0";
+		};
+	};
+	pinctrl_i2c0: pinctrl_i2c0 {
+		pins = "PA0", "PA1";
+		function = "mfp0";
+		drive-open-drain;
+	};
+};
+
+&flash {
+	/delete-node/ ubi;
+	ubi0: ubi@2040000 {
+		label = "ubi0";
+		reg = <0x2040000 0x800000>;
+	};
+	ubi1: ubi@2840000 {
+		label = "ubi1";
+		reg = <0x2840000 0x57c0000>;
+	};
+};
+

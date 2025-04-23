@@ -1,0 +1,127 @@
+/dts-v1/;
+
+// https://www.spinics.net/lists/stable/msg457671.html
+
+/ {
+	description = ITS_FIT_DESCRIPTION;
+	creator = "Rebane";
+	#address-cells = <1>;
+
+	images {
+		kernel-1 {
+			description = ITS_IMAGE_KERNEL_DESCRIPTION;
+			type = "kernel";
+			arch = "arm";
+			os = "linux";
+			compression = "none";
+			load = <0x00008000>;
+			entry = <0x00008000>;
+			data = /incbin/("kernel.bin");
+			hash-1 {
+				algo = "crc32";
+			};
+		};
+		fdt-1 {
+			description = ITS_IMAGE_FDT_DESCRIPTION;
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			data = /incbin/("devicetree.dtb");
+			hash-1 {
+				algo = "crc32";
+			};
+		};
+		fdt-2 {
+			description = ITS_IMAGE_FDT_DESCRIPTION;
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			data = /incbin/("devicetree_2-port_RS485.dtb");
+			hash-1 {
+				algo = "crc32";
+			};
+		};
+		fdt-3 {
+			description = ITS_IMAGE_FDT_DESCRIPTION;
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			data = /incbin/("devicetree_8ADio1Ro_RS485.dtb");
+			hash-1 {
+				algo = "crc32";
+			};
+		};
+		fdt-4 {
+            description = ITS_IMAGE_FDT_DESCRIPTION;
+            type = "flat_dt";
+            arch = "arm";
+            compression = "none";
+            data = /incbin/("devicetree_3OiRo_RS485.dtb");
+            hash-1 {
+                algo = "crc32";
+            };
+        };
+		ramdisk-1 {
+			description = ITS_IMAGE_RAMDISK_DESCRIPTION;
+			type = "ramdisk";
+			arch = "arm";
+			os = "linux";
+			compression = "lzma";
+			load = <0x02000000>;
+			data = /incbin/("initrd.cpio.lzma");
+			hash-1 {
+				algo = "crc32";
+			};
+		};
+		filesystem-1 {
+			description = ITS_IMAGE_FILESYSTEM_DESCRIPTION;
+			type = "filesystem";
+			arch = "arm";
+			os = "linux";
+			compression = "none";
+			offset = <0x00000000>;
+			data = /incbin/("rootfs.jffs2");
+			hash-1 {
+				algo = "crc32";
+			};
+		};
+	};
+
+	configurations {
+		default = "conf-default";
+
+		conf-default {
+			description = ITS_CONFIGURATION_DESCRIPTION;
+			kernel = "kernel-1";
+			fdt = "fdt-1";
+			ramdisk = "ramdisk-1";
+			filesystem = "filesystem-1";
+		};
+
+		conf-0301 {
+			description = "conf_0301";
+			kernel = "kernel-1";
+			fdt = "fdt-4";
+			ramdisk = "ramdisk-1";
+			filesystem = "filesystem-1";
+		};
+
+		conf-0201 {
+			description = "conf_0201";
+			kernel = "kernel-1";
+			fdt = "fdt-2";
+			ramdisk = "ramdisk-1";
+			filesystem = "filesystem-1";
+		};
+		
+		conf-0101 {
+			description = "conf_0101";
+			kernel = "kernel-1";
+			fdt = "fdt-3";
+			ramdisk = "ramdisk-1";
+			filesystem = "filesystem-1";
+		};
+
+	};
+};
+

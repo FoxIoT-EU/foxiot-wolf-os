@@ -1,0 +1,16 @@
+dir /lib 755 0 0
+file /lib/librtlsdr.so.0.7git ${ROOT}/lib/librtlsdr.so.0.7git 755 0 0
+slink /lib/librtlsdr.so.0 /lib/librtlsdr.so.0.7git 777 0 0
+slink /lib/librtlsdr.so /lib/librtlsdr.so.0 777 0 0
+
+dir /bin 755 0 0
+file /bin/rtl_adsb ${ROOT}/bin/rtl_adsb 755 0 0
+file /bin/rtl_eeprom ${ROOT}/bin/rtl_eeprom 755 0 0
+file /bin/rtl_fm ${ROOT}/bin/rtl_fm 755 0 0
+file /bin/rtl_ir ${ROOT}/bin/rtl_ir 755 0 0
+file /bin/rtl_power ${ROOT}/bin/rtl_power 755 0 0
+file /bin/rtl_rpcd ${ROOT}/bin/rtl_rpcd 755 0 0
+file /bin/rtl_sdr ${ROOT}/bin/rtl_sdr 755 0 0
+file /bin/rtl_tcp ${ROOT}/bin/rtl_tcp 755 0 0
+file /bin/rtl_test ${ROOT}/bin/rtl_test 755 0 0
+

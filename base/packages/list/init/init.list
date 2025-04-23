@@ -1,0 +1,10 @@
+file /init ${ROOT}/init 755 0 0
+
+dir /dev 755 0 0
+nod /dev/console 644 0 0 c 5 1
+nod /dev/ttyinit 644 0 0 c 204 40
+
+dir /proc 755 0 0
+dir /sys 755 0 0
+dir /tmp 1777 0 0
+
