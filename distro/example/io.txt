@@ -119,6 +119,17 @@ IN7             - PF2
 IN8             - PF3
 	gpioget b0004140.nuc980-gpio 3
 
+ANALOG INPUTS 1..8
+for dev in /sys/bus/iio/devices/iio:device*; do
+  if ls -l "$dev" 2>/dev/null | grep -q "spi1.0"; then
+    scale=$(cat "$dev/in_voltage0_scale")
+    for value in "$dev"/in_voltage*_raw; do
+      echo "$(cat "$value") * $scale / 1000" | bc -l
+    done
+    break
+  fi
+done
+
 PULLUP1         - SPI1: (ON / OFF)
 	gpioset 74hc595 0=1
 	gpioset 74hc595 0=0
