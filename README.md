@@ -1,51 +1,34 @@
-# FoxIoT Gateway OS Builder
+# FoxIoT Wolf OS
 
 Welcome to the FoxIoT Gateway OS build system. This repository helps you build and customize firmware for the FoxIoT Wolf IIoT Gateway.
 
-## Getting Started
+---
 
-Make sure [Git](https://git-scm.com/downloads) is installed.
+## Documentation
 
-Then clone this repository:
+- 📦 [Getting Started Guide](docs/getting_started.md)
+- 📁 [Distro Explained](docs/distro_explained.md)
+- ⚙️ [Building the OS](docs/building.md)
+- 🛠️ ~~Hardware Targets (coming soon)~~
+- 📜 [Third-Party Licenses](docs/licenses.md)
 
-```sh
-git clone https://github.com/FoxIoT-EU/foxiot-wolf-os.git
-cd foxiot-wolf-os
-```
+---
 
-## Supported Build Methods
+## About
 
-You can build the OS in two ways:
+FoxIoT Wolf OS is a lightweight Linux firmware created for industrial IoT applications.
 
-- **[Using Docker (recommended)](docs/docker-build.md)** – the preferred method for consistent and reproducible builds across different systems and teams.
-- **[Locally on Linux](docs/local-build.md)** – build directly on your system using native tools (documentation coming soon).
+This repository is the build system that creates the Wolf OS firmware. Wolf OS itself is a custom embedded Linux system based on BusyBox, combined with FoxIoT’s own boot system, networking stack, and core services to ensure robust operation.
 
-## Repository Structure
+While it is optimized for FoxIoT Wolf IIoT Gateways, it can also be adapted for use on other hardware.
 
-```
-foxiot-wolf-os/
-├── base/                       # Core packages, common device tree, kernel image, and build logic
-├── docker/
-│   ├── Dockerfile
-│   └── make-inside-docker.sh   # Internal script used in container
-├── distro/
-│   ├── foxiot/
-│   └── other-distros/
-├── build/                      # Output directory
-└── build-in-docker.sh          # Entry point for Docker-based builds
-```
+---
 
 ## Support
 
-If you have any questions or run into issues, please reach out to [support@foxiot.eu](mailto:support@foxiot.eu).
+For any questions or support requests, please contact:
 
-## Third-Party Licenses
+**support@foxiot.eu**
 
-This project includes or depends on third-party software components (such as BusyBox, Dropbear, etc.)  
-which are distributed under their own respective licenses (e.g., GPLv2, MIT, BSD).
-
-These components are not covered by this repository’s MIT License.  
-Please refer to the documentation or upstream sources of each component for licensing details.
-
-We do not modify these packages and include them as-is in the build system.
+---
 
