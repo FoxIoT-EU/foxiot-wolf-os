@@ -6,9 +6,9 @@ Welcome to the FoxIoT Gateway OS build system. This repository helps you build a
 
 ## Documentation
 
-- 📦 [Getting Started Guide](docs/getting_started.md)
-- 📁 [Distro Explained](docs/distro_explained.md)
-- ⚙️ [Building the OS](docs/building.md)
+- 📦 [Getting Started Guide](docs/getting-started.md)
+- 📁 ~~[Distro Explained](docs/distro_explained.md)~~
+- ⚙️ ~~[Building the OS](docs/building.md)~~
 - 🛠️ ~~Hardware Targets (coming soon)~~
 - 📜 [Third-Party Licenses](docs/licenses.md)
 
