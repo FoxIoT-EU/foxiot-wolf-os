@@ -5,7 +5,7 @@
 - [1. Accessing the Controller](#1-accessing-the-controller)
 - [2. Compiling Your First Application](#2-compiling-your-first-application)
   - [C Example](#example-c-hello-world-program)
-  - [C++ Example](#example-c++-hello-world-program)
+  - [C++ Example](#example-cpp-hello-world-program)
   - [Rust Example](#example-rust-hello-world-program)
 - [3. Uploading Your Application](#3-uploading-your-application)
 - [4. Running Your Application](#4-running-your-application)
@@ -125,7 +125,7 @@ arm-linux-gnueabi-strip hello_world
 
 ---
 
-### Example: C++ Hello World Program
+### Example: Cpp Hello World Program
 
 Create a simple C++ file:
 
