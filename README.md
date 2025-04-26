@@ -27,7 +27,7 @@ While it is optimized for FoxIoT Wolf IIoT Gateways, it can also be adapted for 
 
 ## Support
 
-For any questions or support requests, please contact:
+For any questions regarding hardware, software, or build process, please contact:
 
 **support@foxiot.eu**
 
