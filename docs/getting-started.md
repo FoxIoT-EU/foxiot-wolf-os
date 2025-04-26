@@ -53,16 +53,23 @@ The output `.itb` file will appear inside the `build/` directory.
 ## 5. Copy the Image to the Controller
 
 After building, copy the `.itb` image file to your controller:
+- Default user: `root`
+- Default password: `foxiot`
 ```bash
 scp -O build/root_YOUR_PROJECT_NAME_0.1.1.itb root@YOUR_CONTROLLER_IP:/tmp/
 ```
 Replace `YOUR_CONTROLLER_IP` with your controller’s IP address.
+
+> 💡 Need help finding your controller's IP address or logging in?  
+> See [Developer Quick Start - Accessing the Controller](developer-quick-start.md#1-accessing-the-controller) for more information.
 
 ---
 
 ## 6. Install the New Image
 
 Log in to the controller via SSH:
+- Default user: `root`
+- Default password: `foxiot`
 ```bash
 ssh root@YOUR_CONTROLLER_IP
 ```
