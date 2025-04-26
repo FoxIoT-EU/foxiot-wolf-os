@@ -46,7 +46,7 @@ Build your firmware image using Docker:
 
 The output `.itb` file will appear inside the `build/` directory.
 
-> 💡 For more detailed instructions about installing and building with Docker, see [Building with Docker](docs/docker-build.md).
+> 💡 For more detailed instructions about installing and building with Docker, see [Building with Docker](docker-build.md).
 
 ---
 
