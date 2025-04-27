@@ -16,7 +16,17 @@ This guide helps you quickly start working with your FoxIoT Wolf controller afte
 
 ## 1. Accessing the Controller
 
-Once your controller is running, it will automatically try to obtain an IP address via DHCP.
+### Quick Links
+- [Finding the Controller's IP Address](#finding-the-controllers-ip-address)
+- [Logging in via SSH](#logging-in-via-ssh)
+- [Default Root Password and Security Settings](#default-root-password-and-security-settings)
+- [Adding an SSH Public Key](#adding-an-ssh-public-key)
+
+---
+
+### Finding the Controller's IP Address
+
+Once your controller is running, it will automatically try to obtain an IP address via DHCP by default. (You can later configure a static IP if needed.) 
 
 To find the controller on your network:
 - Check your router's DHCP client list.
@@ -38,7 +48,11 @@ Or use `nmap` if you prefer:
 nmap -sn 192.168.1.0/24
 ```
 
-After finding the IP address, access it over SSH:
+---
+
+### Logging in via SSH
+
+After finding the IP address, access the controller over SSH:
 
 ```bash
 ssh root@YOUR_CONTROLLER_IP
@@ -47,6 +61,10 @@ ssh root@YOUR_CONTROLLER_IP
 - Default user: `root`
 - Default password: `foxiot`
 
+---
+
+### Default Root Password and Security Settings
+
 The root password is managed through your project Makefile (located at `distro/YOUR_PROJECT_NAME/Makefile`):
 
 ```make
@@ -54,15 +72,9 @@ PASSWORD = "foxiot"
 ```
 
 > 💡 **Important Security Note:**
-> 
-> The root password is managed through your project Makefile (located at `distro/YOUR_PROJECT_NAME/Makefile`):
-> 
-> ```make
-> PASSWORD = "foxiot"
-> ```
 >
 > To change the root password, edit this line before building the firmware.
-> 
+>
 > To **disable password login completely**, comment it out by adding a `#`:
 >
 > ```make
@@ -71,6 +83,7 @@ PASSWORD = "foxiot"
 >
 > It is highly recommended to disable root password login and rely only on SSH public key authentication for accessing the controller.
 
+---
 
 ### Adding an SSH Public Key
 
@@ -84,6 +97,7 @@ For secure, passwordless login:
 2. Add your public key(s) to the firmware project before building:
 
    Use your preferred text editor to create or edit the file, and place one or more public keys into it:
+
    ```bash
    distro/YOUR_PROJECT_NAME/root/etc/dropbear/authorized_keys
    ```
