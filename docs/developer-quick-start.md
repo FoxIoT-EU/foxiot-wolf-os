@@ -2,15 +2,18 @@
 
 ## Table of Contents
 
-- [1. Accessing the Controller](#1-accessing-the-controller)
-- [2. Compiling Your First Application](#2-compiling-your-first-application)
-- [3. Adding Your Application to the Firmware](#3-adding-your-application-to-the-firmware)
+- [Accessing the Controller](#accessing-the-controller)
+- [Compiling Your First Application](#compiling-your-first-application)
+  - [C Example](#example-c-hello-world-program)
+  - [C++ Example](#example-cpp-hello-world-program)
+  - [Rust Example](#example-rust-hello-world-program)
+- [Adding Your Application to the Firmware](#adding-your-application-to-the-firmware)
 
 This guide helps you quickly start working with your FoxIoT Wolf controller after installing the firmware.
 
 ---
 
-## 1. Accessing the Controller
+## Accessing the Controller
 
 ### Quick Links
 - [Finding the Controller's IP Address](#finding-the-controllers-ip-address)
@@ -22,7 +25,7 @@ This guide helps you quickly start working with your FoxIoT Wolf controller afte
 
 ### Finding the Controller's IP Address
 
-Once your controller is running, it will automatically try to obtain an IP address via DHCP by default. (You can later configure a static IP if needed.) 
+Once your controller is running, it will automatically try to obtain an IP address via DHCP by default. (You can later configure a static IP if needed.)
 
 To find the controller on your network:
 - Check your router's DHCP client list.
@@ -101,11 +104,14 @@ For secure, passwordless login:
 > 💡 You can add multiple public keys (one per line) if you want to allow access for several users.
 > These keys will be automatically included into the firmware, allowing secure, passwordless access after flashing.
 
-## 2. Compiling Your First Application
+---
+
+## Compiling Your First Application
 
 You will need to cross-compile your application for the controller's CPU architecture.
 
 The FoxIoT Wolf controller uses an ARM926EJ-S processor (ARMv5 architecture). Make sure to target ARMv5 when building your applications.
+
 ### Quick Links
 - [C Example](#example-c-hello-world-program)
 - [C++ Example](#example-cpp-hello-world-program)
@@ -210,7 +216,9 @@ The compiled binary will appear under:
 target/armv5te-unknown-linux-gnueabi/release/hello_wolf
 ```
 
-## 3. Adding Your Application to the Firmware
+---
+
+## Adding Your Application to the Firmware
 
 After compiling your application, you can include it directly into your project build.
 
@@ -262,13 +270,11 @@ After compiling your application, you can include it directly into your project 
 Edit `root/etc/rc.local` and insert the following line **before** the `exit 0` line:
 
 ```bash
-   # Start YOUR_APP_NAME
-   /etc/rc.YOUR_APP_NAME > /dev/null 2>&1 &
-   ```
+# Start YOUR_APP_NAME
+/etc/rc.YOUR_APP_NAME > /dev/null 2>&1 &
+```
 
 6. Build and install the updated firmware:
 
    Follow the instructions from the [Getting Started Guide - Build the Image and Install](../docs/getting-started.md#4-build-the-image) section to rebuild and flash the firmware to your controller.
-
-
 
