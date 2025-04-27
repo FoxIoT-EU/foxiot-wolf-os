@@ -4,9 +4,6 @@
 
 - [Accessing the Controller](#accessing-the-controller)
 - [Compiling Your First Application](#compiling-your-first-application)
-  - [C Example](#example-c-hello-world-program)
-  - [C++ Example](#example-cpp-hello-world-program)
-  - [Rust Example](#example-rust-hello-world-program)
 - [Adding Your Application to the Firmware](#adding-your-application-to-the-firmware)
 
 This guide helps you quickly start working with your FoxIoT Wolf controller after installing the firmware.
