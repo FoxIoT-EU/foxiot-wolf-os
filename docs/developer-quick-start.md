@@ -4,8 +4,7 @@
 
 - [1. Accessing the Controller](#1-accessing-the-controller)
 - [2. Compiling Your First Application](#2-compiling-your-first-application)
-- [3. Uploading Your Application](#3-uploading-your-application)
-- [4. Running Your Application](#4-running-your-application)
+- [3. Adding Your Application to the Firmware](#3-adding-your-application-to-the-firmware)
 
 This guide helps you quickly start working with your FoxIoT Wolf controller after installing the firmware.
 
@@ -210,6 +209,66 @@ The compiled binary will appear under:
 ```bash
 target/armv5te-unknown-linux-gnueabi/release/hello_wolf
 ```
+
+## 3. Adding Your Application to the Firmware
+
+After compiling your application, you can include it directly into your project build.
+
+### Steps:
+
+1. (Recommended) Go to your project directory:
+
+   If you don't go into the project directory, you will need to use full paths like `distro/YOUR_PROJECT_NAME/root/bin/` for all file operations.
+
+   ```bash
+   cd distro/YOUR_PROJECT_NAME
+   ```
+
+2. Copy your application binary into the `root/bin/` folder:
+
+   ```bash
+   cp PATH_TO_YOUR_APP_BINARY root/bin/
+   ```
+
+3. Tell the builder to include the binary in the firmware:
+
+   Open `rootfs.list`, find the existing `dir /bin 755 0 0` line,
+   and add your file line directly after it:
+
+   ```text
+   file /bin/YOUR_APP_NAME root/bin/YOUR_APP_NAME 755 0 0
+   ```
+
+4. (Optional) Create a startup script if you want the app to start automatically:
+
+   Create a new file `root/etc/rc.YOUR_APP_NAME`:
+
+   ```bash
+   #!/bin/sh
+   while true; do
+       /bin/YOUR_APP_NAME >/dev/null 2>&1
+       sleep 1
+   done
+   ```
+
+   Also add your startup script into `rootfs.list` after the existing `/etc` folder:
+
+   ```text
+   file /etc/rc.YOUR_APP_NAME root/etc/rc.YOUR_APP_NAME 755 0 0
+   ```
+
+5. Add the startup script to `rc.local` to run it on boot:
+
+Edit `root/etc/rc.local` and insert the following line **before** the `exit 0` line:
+
+```bash
+   # Start YOUR_APP_NAME
+   /etc/rc.YOUR_APP_NAME > /dev/null 2>&1 &
+   ```
+
+6. Build and install the updated firmware:
+
+   Follow the instructions from the [Getting Started Guide - Build the Image and Install](../docs/getting-started.md#4-build-the-image) section to rebuild and flash the firmware to your controller.
 
 
 
