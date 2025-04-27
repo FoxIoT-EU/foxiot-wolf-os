@@ -4,9 +4,6 @@
 
 - [1. Accessing the Controller](#1-accessing-the-controller)
 - [2. Compiling Your First Application](#2-compiling-your-first-application)
-  - [C Example](#example-c-hello-world-program)
-  - [C++ Example](#example-cpp-hello-world-program)
-  - [Rust Example](#example-rust-hello-world-program)
 - [3. Uploading Your Application](#3-uploading-your-application)
 - [4. Running Your Application](#4-running-your-application)
 
@@ -110,6 +107,12 @@ For secure, passwordless login:
 You will need to cross-compile your application for the controller's CPU architecture.
 
 The FoxIoT Wolf controller uses an ARM926EJ-S processor (ARMv5 architecture). Make sure to target ARMv5 when building your applications.
+### Quick Links
+- [C Example](#example-c-hello-world-program)
+- [C++ Example](#example-cpp-hello-world-program)
+- [Rust Example](#example-rust-hello-world-program)
+
+---
 
 ### Example: C Hello World Program
 
