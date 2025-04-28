@@ -372,7 +372,14 @@ The configuration defines how network interfaces are managed, how priorities are
 
 If you want to configure the LAN interface to use DHCP instead of a static IP address:
 
-Replace the entire `"static"` block inside the LAN `"configurations"` with:
+Replace the `"static"` configuration inside the LAN `"configurations"` block with the following "dynamic" configuration:
+
+```json
+"dynamic": {
+  "mode": "dynamic"
+}
+```
+After this change, the full `"configurations"` section for LAN should look like:
 
 ```json
 "configurations": {
