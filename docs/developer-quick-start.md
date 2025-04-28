@@ -5,7 +5,7 @@
 - [Accessing the Controller](#accessing-the-controller)
 - [Compiling Your First Application](#compiling-your-first-application)
 - [Adding Your Application to the Firmware](#adding-your-application-to-the-firmware)
-- [Configuring netd (Network Daemon)] (#configuring-netd-(network-daemon))
+- [Configuring netd (Network Daemon)](#configuring-netd-network-daemon)
 
 This guide helps you quickly start working with your FoxIoT Wolf controller after installing the firmware.
 
@@ -276,7 +276,9 @@ Edit `root/etc/rc.local` and insert the following line **before** the `exit 0` l
 
    Follow the instructions from the [Getting Started Guide - Build the Image and Install](../docs/getting-started.md#4-build-the-image) section to rebuild and flash the firmware to your controller.
 
-# Configuring netd (Network Daemon)
+---
+
+## Configuring netd (Network Daemon)
 
 The `netd` service is FoxIoT's network management daemon responsible for:
 
@@ -290,7 +292,7 @@ By default, the `/etc/rc.netd` startup script loads the configuration from `/mnt
 
 ---
 
-## Quick Links
+### Quick Links
 
 - [Full Example Configuration](#full-example-configuration)
 - [Switching LAN to DHCP](#switching-lan-to-dhcp)
@@ -300,11 +302,11 @@ By default, the `/etc/rc.netd` startup script loads the configuration from `/mnt
 
 ---
 
-# Configuration (JSON Format)
+## Configuration (JSON Format)
 
 The configuration defines how network interfaces are managed, how priorities are handled, and how network failover is processed.
 
-## Full Example Configuration
+### Full Example Configuration
 
 ```json
 {
@@ -366,7 +368,7 @@ The configuration defines how network interfaces are managed, how priorities are
 }
 ```
 
-## Switching LAN to DHCP
+### Switching LAN to DHCP
 
 If you want to configure the LAN interface to use DHCP instead of a static IP address:
 
@@ -384,13 +386,13 @@ This will instruct `netd` to request an IP address automatically using DHCP for 
 
 ---
 
-# Configuration Structure Explained
+## Configuration Structure Explained
 
-## Interfaces
+### Interfaces
 
 Defines the network interfaces and their basic settings.
 
-### LAN Interface (Ethernet)
+#### LAN Interface (Ethernet)
 
 - Type: `lan`
 - Device: Typically `eth0`.
@@ -403,7 +405,7 @@ Defines the network interfaces and their basic settings.
   - `netconf`: Static IP settings (address, gateway, DNS, netmask).
   - `ping`: *(Optional)* Enables connection monitoring.
 
-### WWAN Interface (Modem)
+#### WWAN Interface (Modem)
 
 - Type: `rndis` (uses RNDIS USB driver for modem connection)
 - Configuration defines mobile network connection parameters.
@@ -413,7 +415,7 @@ Key fields for WWAN:
   - `apn`: Required, must be set according to your mobile operator.
   - `ping`: *(Mandatory)* Monitors internet connectivity.
 
-## Priorities
+### Priorities
 
 - Defines the order of interface usage.
 - **Lower number = higher priority**.
@@ -422,11 +424,11 @@ Key fields for WWAN:
 
 
 
-## Ping Monitoring
+### Ping Monitoring
 
 - `ip`: IP address to ping (to check if internet is reachable).
 - `interval`: Time interval between pings (in seconds).
 - `error`: Number of consecutive ping failures before marking the interface as disconnected.
 
-
+---
 
