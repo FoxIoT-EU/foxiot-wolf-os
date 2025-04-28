@@ -426,6 +426,8 @@ Key fields for WWAN:
 
 ### Ping Monitoring
 
+If the monitored interface (LAN or WWAN) fails to respond to the defined ping checks, netd will mark the connection as disconnected. In case of modem (WWAN) failure, netd will also automatically restart the modem to attempt recovery.
+
 - `ip`: IP address to ping (to check if internet is reachable).
 - `interval`: Time interval between pings (in seconds).
 - `error`: Number of consecutive ping failures before marking the interface as disconnected.
