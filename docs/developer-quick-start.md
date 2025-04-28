@@ -5,6 +5,7 @@
 - [Accessing the Controller](#accessing-the-controller)
 - [Compiling Your First Application](#compiling-your-first-application)
 - [Adding Your Application to the Firmware](#adding-your-application-to-the-firmware)
+- [Configuring netd (Network Daemon)] (#configuring-netd-(network-daemon))
 
 This guide helps you quickly start working with your FoxIoT Wolf controller after installing the firmware.
 
@@ -274,4 +275,158 @@ Edit `root/etc/rc.local` and insert the following line **before** the `exit 0` l
 6. Build and install the updated firmware:
 
    Follow the instructions from the [Getting Started Guide - Build the Image and Install](../docs/getting-started.md#4-build-the-image) section to rebuild and flash the firmware to your controller.
+
+# Configuring netd (Network Daemon)
+
+The `netd` service is FoxIoT's network management daemon responsible for:
+
+- Managing Ethernet and modem connections
+- Assigning IP addresses (DHCP client or static)
+- Setting up network routes
+- Handling priority between Ethernet and mobile modems (failover support)
+
+`netd` requires a JSON configuration file to operate.
+By default, the `/etc/rc.netd` startup script loads the configuration from `/mnt/rodata/netd/netd.conf`. If this file does not exist, it will fall back to `/etc/netd.conf`.
+
+---
+
+## Quick Links
+
+- [Full Example Configuration](#full-example-configuration)
+- [Switching LAN to DHCP](#switching-lan-to-dhcp)
+- [Interfaces](#interfaces)
+- [Priorities](#priorities)
+- [Ping Monitoring](#ping-monitoring)
+
+---
+
+# Configuration (JSON Format)
+
+The configuration defines how network interfaces are managed, how priorities are handled, and how network failover is processed.
+
+## Full Example Configuration
+
+```json
+{
+  "actions": {
+    "down": { "type": "down" },
+    "up": { "type": "up" }
+  },
+  "interfaces": {
+    "lan": {
+      "configurations": {
+        "static": {
+          "ping": {
+            "error": 3,
+            "ip": "1.1.1.1",
+            "interval": 300
+          },
+          "mode": "static",
+          "netconf": {
+            "address": "192.168.2.132",
+            "dns": "1.1.1.1",
+            "dns2": "8.8.8.8",
+            "gateway": "192.168.2.1",
+            "netmask": "255.255.255.0"
+          }
+        }
+      },
+      "device": { "name": "eth0" },
+      "type": "lan"
+    },
+    "wwan": {
+      "configurations": {
+        "lte": {
+          "apn": "terminal",
+          "ping": {
+            "error": 3,
+            "ip": "1.1.1.1",
+            "interval": 300
+          }
+        }
+      },
+      "device": {
+        "disable": "gpiodset pcie_power off",
+        "enable": "gpiodset pcie_power on",
+        "usbDevice": "1-2"
+      },
+      "type": "rndis"
+    }
+  },
+  "priorities": {
+    "lan": {
+      "configuration": "static",
+      "priority": 0
+    },
+    "wwan": {
+      "configuration": "lte",
+      "priority": 1
+    }
+  }
+}
+```
+
+## Switching LAN to DHCP
+
+If you want to configure the LAN interface to use DHCP instead of a static IP address:
+
+Replace the entire `"static"` block inside the LAN `"configurations"` with:
+
+```json
+"configurations": {
+  "dynamic": {
+    "mode": "dynamic"
+  }
+}
+```
+
+This will instruct `netd` to request an IP address automatically using DHCP for the Ethernet interface.
+
+---
+
+# Configuration Structure Explained
+
+## Interfaces
+
+Defines the network interfaces and their basic settings.
+
+### LAN Interface (Ethernet)
+
+- Type: `lan`
+- Device: Typically `eth0`.
+- Configuration Modes:
+  - `static`: Manual IP address configuration.
+  - `dynamic`: DHCP client mode.
+- Optional `ping` monitoring can be added to check internet connectivity health.
+- Key fields for LAN:
+  - `mode`: Connection mode (`static` or `dynamic`) for LAN interfaces only.
+  - `netconf`: Static IP settings (address, gateway, DNS, netmask).
+  - `ping`: *(Optional)* Enables connection monitoring.
+
+### WWAN Interface (Modem)
+
+- Type: `rndis` (uses RNDIS USB driver for modem connection)
+- Configuration defines mobile network connection parameters.
+- `ping` monitoring is **mandatory** for reliability.
+
+Key fields for WWAN:
+  - `apn`: Required, must be set according to your mobile operator.
+  - `ping`: *(Mandatory)* Monitors internet connectivity.
+
+## Priorities
+
+- Defines the order of interface usage.
+- **Lower number = higher priority**.
+- netd will try to use the highest-priority interface that is reachable.
+- If the connection is lost (based on ping failure) or the network link goes down (e.g., Ethernet cable unplugged), it switches to the next available interface.
+
+
+
+## Ping Monitoring
+
+- `ip`: IP address to ping (to check if internet is reachable).
+- `interval`: Time interval between pings (in seconds).
+- `error`: Number of consecutive ping failures before marking the interface as disconnected.
+
+
 
