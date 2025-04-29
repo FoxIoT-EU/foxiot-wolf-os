@@ -290,6 +290,8 @@ The `netd` service is FoxIoT's network management daemon responsible for:
 `netd` requires a JSON configuration file to operate.
 By default, the `/etc/rc.netd` startup script loads the configuration from `/mnt/rodata/netd/netd.conf`. If this file does not exist, it will fall back to `/etc/netd.conf`.
 
+💡 `netd` is included automatically in the system via the `base.list` package set during the firmware build process. No manual installation is required.
+
 ---
 
 ### Quick Links
