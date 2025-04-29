@@ -73,7 +73,7 @@ PASSWORD = "foxiot"
 >
 > To change the root password, edit this line before building the firmware.
 >
-> To **disable password login completely**, comment it out by adding ### Quick Linksa `#`:
+> To **disable password login completely**, comment it out by adding a `#`:
 >
 > ```make
 > # PASSWORD = "foxiot"
@@ -83,143 +83,7 @@ PASSWORD = "foxiot"
 
 ---
 
-### Adding an SSH Public Key# WireGuard VPN Setup
-
-## Introduction
-
-WireGuard VPN is supported out-of-the-box via the `wireguard.list` package set. The system uses a lightweight custom script to manage the WireGuard tunnel, instead of the full `wg-quick` functionality.
-
-Configuration must be handled manually.
-
----
-
-## Generating WireGuard Keys
-
-For security reasons, it is highly recommended to generate private and public keys **directly on the controller**.
-
-```bash
-mount -o remount,rw /mnt/rodata
-mkdir -p /mnt/rodata/wireguard
-wg genkey > /mnt/rodata/wireguard/privatekey
-wg pubkey < /mnt/rodata/wireguard/privatekey > /mnt/rodata/wireguard/publickey
-```
-
-> 💡 **Important:** Never copy the private key off the controller unless absolutely necessary.
-1. Remount `/mnt/rodata` as writable:
-
-   ```bash
-   mount -o remount,rw /mnt/rodata
-   ```
-
-2. Create the WireGuard configuration directory:
-
-   ```bash
-   mkdir -p /mnt/rodata/wireguard
-   ```
-#wireguard-vpn-setup
-3. Generate private and public keys:
-
-   ```bash
-   wg genkey > /mnt/rodata/wireguard/privatekey
-   wg pubkey < /mnt/rodata/wireguard/privatekey > /mnt/rodata/wireguard/publickey
-   ```
-
-> 💡 **Important:** Never copy the private key off the controller unless absolutely necessary.
-
----
-
-## Creating WireGuard Configuration
-
-To view the generated keys for configuration purposes:
-
-```bash
-cat /mnt/rodata/wireguard/publickey
-```
-
-If needed (e.g., to paste into the config file):
-
-```bash
-cat /mnt/rodata/wireguard/privatekey
-```
-
-> ⚠️ Avoid copying the private key off the device unless absolutely necessary.
-
-Create a configuration file `/mnt/rodata/wireguard/wg0.conf` with the following format:
-
-```ini
-[Interface]
-PrivateKey = YOUR_PRIVATE_KEY
-Address = YOUR_CLIENT_IP/CIDR
-
-[Peer]
-PublicKey = YOUR_SERVER_PUBLIC_KEY
-AllowedIPs = ALLOWED_IPS
-Endpoint = YOUR_SERVER_ADDRESS:PORT
-PersistentKeepalive = 25
-```
-
-### Example
-
-```ini
-[Interface]
-PrivateKey = PLACEHOLDER_PRIVATE_KEY
-Address = 172.20.0.182/24
-
-[Peer]
-PublicKey = PLACEHOLDER_SERVER_PUBLIC_KEY
-AllowedIPs = 172.20.0.0/24
-Endpoint = vpn1.foxiot.eu:51820
-PersistentKeepalive = 25
-```
-
-> 💡 Replace all `PLACEHOLDER_...` fields with your real keys and addresses.
-
----
-
-## Applying Configuration
-
-1. Remount `/mnt/rodata` back to read-only:
-
-   ```bash
-   mount -o remount,ro /mnt/rodata
-   ```
-
-2. Reboot the controller to apply the WireGuard connection:
-
-   ```bash
-   reboot
-   ```
-
-After reboot, the `/etc/rc.wireguard` startup script will automatically load and apply the configuration from `/mnt/rodata/wireguard/wg0.conf`.
-
----
-
-## Debugging WireGuard
-
-If your WireGuard tunnel is not connecting, you can enable kernel debug messages for more insight.
-
-### Enable Debug Logging
-```bash
-echo 'module wireguard +p' > /sys/kernel/debug/dynamic_debug/control
-```
-
-### View Logs
-```bash
-dmesg
-```
-
-### Disable Debug Logging
-```bash
-echo 'module wireguard -p' > /sys/kernel/debug/dynamic_debug/control
-```
-
-> 💡 These debug logs are useful to check handshake issues or interface activation problems.
-
----
-
-> ✅ Your secure WireGuard VPN tunnel should now be active!
-
-
+### Adding an SSH Public Key
 
 For secure, passwordless login:
 
@@ -303,7 +167,6 @@ arm-linux-gnueabi-g++ hello.cpp -o hello_world_cpp
 ```
 
 You can optionally strip the binary to reduce its size:
-#wireguard-vpn-setup
 ```bash
 arm-linux-gnueabi-strip hello_world_cpp
 ```
