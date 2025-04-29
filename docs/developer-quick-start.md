@@ -73,7 +73,7 @@ PASSWORD = "foxiot"
 >
 > To change the root password, edit this line before building the firmware.
 >
-> To **disable password login completely**, comment it out by adding a `#`:
+> To **disable password login completely**, comment it out by adding ### Quick Linksa `#`:
 >
 > ```make
 > # PASSWORD = "foxiot"
@@ -116,7 +116,7 @@ wg pubkey < /mnt/rodata/wireguard/privatekey > /mnt/rodata/wireguard/publickey
    ```bash
    mkdir -p /mnt/rodata/wireguard
    ```
-
+#wireguard-vpn-setup
 3. Generate private and public keys:
 
    ```bash
@@ -303,7 +303,7 @@ arm-linux-gnueabi-g++ hello.cpp -o hello_world_cpp
 ```
 
 You can optionally strip the binary to reduce its size:
-
+#wireguard-vpn-setup
 ```bash
 arm-linux-gnueabi-strip hello_world_cpp
 ```
@@ -629,7 +629,7 @@ If the monitored interface (LAN or WWAN) fails to respond to the defined ping ch
 
 ---
 
-##WireGuard VPN Setup
+## WireGuard VPN Setup
 
 ### Introduction
 
@@ -637,6 +637,14 @@ WireGuard VPN is supported out-of-the-box via the `wireguard.list` package set. 
 
 Configuration must be handled manually.
 
+### Quick Links
+
+- [Generating WireGuard Keys](#generating-wireguard-keys)
+- [Creating WireGuard Configuration](#creating-wireguard-configuration)
+- [Example Configuration](#example)
+- [Applying Configuration](#applying-configuration)
+- [Debugging WireGuard](#debugging-wireGuard)
+  
 ---
 
 ### Generating WireGuard Keys
@@ -738,6 +746,8 @@ PersistentKeepalive = 25
 
 After reboot, the `/etc/rc.wireguard` startup script will automatically load and apply the configuration from `/mnt/rodata/wireguard/wg0.conf`.
 
+> ✅ Your secure WireGuard VPN tunnel should now be active!
+
 ---
 
 ### Debugging WireGuard
@@ -760,9 +770,5 @@ echo 'module wireguard -p' > /sys/kernel/debug/dynamic_debug/control
 ```
 
 > 💡 These debug logs are useful to check handshake issues or interface activation problems.
-
----
-
-> ✅ Your secure WireGuard VPN tunnel should now be active!
 
 ---
