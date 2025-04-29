@@ -296,7 +296,7 @@ By default, the `/etc/rc.netd` startup script loads the configuration from `/mnt
 
 - [Full Example Configuration](#full-example-configuration)
 - [Switching LAN to DHCP](#switching-lan-to-dhcp)
-- [Updating netd Configuration at Runtime](updating-netd-configuration-at-runtime)
+- [Updating netd Configuration at Runtime](#updating-netd-configuration-at-runtime)
 - [Interfaces](#interfaces)
 - [Priorities](#priorities)
 - [Ping Monitoring](#ping-monitoring)
