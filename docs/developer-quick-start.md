@@ -296,6 +296,7 @@ By default, the `/etc/rc.netd` startup script loads the configuration from `/mnt
 
 - [Full Example Configuration](#full-example-configuration)
 - [Switching LAN to DHCP](#switching-lan-to-dhcp)
+- [Updating netd Configuration at Runtime](updating-netd-configuration-at-runtime)
 - [Interfaces](#interfaces)
 - [Priorities](#priorities)
 - [Ping Monitoring](#ping-monitoring)
@@ -394,6 +395,54 @@ This will instruct `netd` to request an IP address automatically using DHCP for 
 ---
 
 ## Configuration Structure Explained
+
+### Updating netd Configuration at Runtime
+
+If you want to customize the network settings after flashing the firmware:
+
+1. Remount `/mnt/rodata` as writable:
+
+   ```bash
+   mount -o remount,rw /mnt/rodata
+   ```
+
+2. Create the `netd` folder (if it doesn't exist):
+
+   ```bash
+   mkdir -p /mnt/rodata/netd
+   ```
+
+3. Copy the existing configuration as a starting point **(optional)**:
+
+   ```bash
+   cp /etc/netd.conf /mnt/rodata/netd/
+   ```
+
+4. Edit the configuration:
+
+   You can either:
+   - Modify the copied `/mnt/rodata/netd/netd.conf`, or
+   - Create a new one manually by following the [Full Example Configuration](#full-example-configuration).
+
+   Example using `vim`:
+
+   ```bash
+   vim /mnt/rodata/netd/netd.conf
+   ```
+
+5. Remount `/mnt/rodata` as read-only:
+
+   ```bash
+   mount -o remount,ro /mnt/rodata
+   ```
+
+6. Reboot the controller to apply changes:
+
+   ```bash
+   reboot
+   ```
+
+> 💡 After reboot, `netd` will automatically load the updated configuration from `/mnt/rodata/netd/netd.conf`.
 
 ### Interfaces
 
