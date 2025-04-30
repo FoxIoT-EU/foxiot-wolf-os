@@ -6,6 +6,31 @@
 # Panic on out-of-memory
 echo 1 > /proc/sys/vm/panic_on_oom
 
+LED_PATH=/sys/class/leds/yellow:debug
+
+# If button is pressed during boot
+if ! button; then	
+	# Blink LED to indicate recovery mode is active
+	echo timer > "$LED_PATH/trigger"
+	echo 100 > "$LED_PATH/delay_on"
+	echo 100 > "$LED_PATH/delay_off"
+
+	# Wait up to 5 seconds for the user to release the button
+	for i in 1 2 3 4 5; do
+		if button; then
+			mkdir -p /run/netd
+			cp /etc/netd_recovery.conf /run/netd/
+			sync
+			break
+		fi
+		sleep 1
+	done
+
+	# Stop LED blinking
+	echo none > "$LED_PATH/trigger"
+fi
+
+
 # Setting up DNS
 /etc/netd.sh dns eth0 "$(cat /etc/resolv.conf.static)"
 

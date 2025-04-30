@@ -21,6 +21,7 @@ dir /var/log/ 755 0 0
 dir /etc 755 0 0
 file /etc/rc.local root/etc/rc.local 755 0 0
 file /etc/rc.netd root/etc/rc.netd 755 0 0
+file /etc/netd_recovery.conf root/etc/netd_recovery.conf 755 0 0
 file /etc/rc.dropbear root/etc/rc.dropbear 755 0 0
 file /etc/conn-monitor.sh root/etc/conn-monitor.sh 755 0 0
 file /etc/firewall root/etc/firewall 755 0 0

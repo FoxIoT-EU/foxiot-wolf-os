@@ -1,10 +1,13 @@
 #!/bin/sh
 
 readonly DEFAULT_CONF_FILE=/etc/netd.conf
+readonly RECOVERY_CONF_FILE=/run/netd/netd_recovery.conf
 readonly USER_CONF_FILE=/mnt/rwdata/app/netd.conf
 readonly USER_CONF_RO_FILE=/mnt/rodata/netd/netd.conf
 
-if [ -f $USER_CONF_FILE ]; then
+if [ -f $RECOVERY_CONF_FILE ]; then
+	CONF_FILE=$RECOVERY_CONF_FILE
+elif [ -f $USER_CONF_FILE ]; then
 	CONF_FILE=$USER_CONF_FILE
 elif [ -f $USER_CONF_RO_FILE ]; then
 	CONF_FILE=$USER_CONF_RO_FILE
@@ -20,6 +23,14 @@ while true; do
 	ifconfig wwan0 down
 	sleep 1
 	/bin/netd $CONF_FILE
+	RET=$?
+
+	# If netd exits with code 100, it means JSON parsing failed
+	# Switch to default config 
+	if [ $RET -eq 100 ]; then
+		CONF_FILE="$DEFAULT_CONF_FILE"
+	fi
+	
 	sleep 10
 done
 
