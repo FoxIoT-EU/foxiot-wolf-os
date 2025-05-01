@@ -171,6 +171,13 @@ You can optionally strip the binary to reduce its size:
 arm-linux-gnueabi-strip hello_world_cpp
 ```
 
+> 💡 To enable C++ runtime support, make sure you include the standard C++ library in your build.
+> Add the following line to your project's `rootfs.list` file:
+
+```
+#include "libstdc++.list"
+```
+
 ---
 
 ### Example: Rust Hello World Program
