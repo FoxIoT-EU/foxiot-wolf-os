@@ -114,6 +114,7 @@ The FoxIoT Wolf controller uses an ARM926EJ-S processor (ARMv5 architecture). Ma
 ### Quick Links
 - [C Example](#example-c-hello-world-program)
 - [C++ Example](#example-cpp-hello-world-program)
+  - [Community Contribution](cpp-community-contribution)
 - [Rust Example](#example-rust-hello-world-program)
 
 ---
@@ -146,7 +147,7 @@ arm-linux-gnueabi-strip hello_world
 
 ---
 
-### Example: Cpp Hello World Program
+### Example: CPP Hello World Program
 
 Create a simple C++ file:
 
@@ -177,6 +178,12 @@ arm-linux-gnueabi-strip hello_world_cpp
 ```
 #include "libstdc++.list"
 ```
+
+#### CPP Community Contribution
+
+A customer-maintained example project demonstrating how to structure and build a basic C++ application on Wolf OS is available here:  
+👉 [kptr-juku/wolf-os-cpp](https://github.com/kptr-juku/wolf-os-cpp)  
+_Note: This is not officially maintained by FoxIoT._
 
 ---
 
