@@ -114,7 +114,7 @@ The FoxIoT Wolf controller uses an ARM926EJ-S processor (ARMv5 architecture). Ma
 ### Quick Links
 - [C Example](#example-c-hello-world-program)
 - [C++ Example](#example-cpp-hello-world-program)
-  - [Community Contribution](cpp-community-contribution)
+  - [Community Contribution](#cpp-community-contribution)
 - [Rust Example](#example-rust-hello-world-program)
 
 ---
