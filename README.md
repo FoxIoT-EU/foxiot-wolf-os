@@ -1,4 +1,4 @@
-# FoxIoT Wolf OS
+# [FoxIoT Wolf OS](www.foxiot.eu)
 
 Welcome to the FoxIoT Gateway OS build system. This repository helps you build and customize firmware for the FoxIoT Wolf IIoT Gateway.
 
@@ -15,7 +15,7 @@ Welcome to the FoxIoT Gateway OS build system. This repository helps you build a
 
 ## About
 
-FoxIoT Wolf OS is a lightweight Linux firmware created for industrial IoT applications.
+[FoxIoT](www.foxiot.eu) Wolf OS is a lightweight Linux firmware created for industrial IoT applications.
 
 This repository is the build system that creates the Wolf OS firmware. Wolf OS itself is a custom embedded Linux system based on BusyBox, combined with FoxIoT’s own boot system, networking stack, and core services to ensure robust operation.
 
