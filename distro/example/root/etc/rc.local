@@ -30,6 +30,8 @@ if ! button; then
 	echo none > "$LED_PATH/trigger"
 fi
 
+# Activate hotplug
+echo /sbin/fdev > /proc/sys/kernel/hotplug
 
 # Setting up DNS
 /etc/netd.sh dns eth0 "$(cat /etc/resolv.conf.static)"
