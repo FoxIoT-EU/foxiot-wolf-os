@@ -1,3 +1,4 @@
 build/
 .build/
 *.itb
+distro/*/root/etc/passwd
