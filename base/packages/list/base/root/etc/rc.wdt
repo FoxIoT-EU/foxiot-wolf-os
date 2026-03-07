@@ -1,0 +1,15 @@
+#!/bin/sh
+# Start watchdogd and kick it every 10 seconds.
+# If this loop stops, watchdogd will stop kicking the hardware
+# watchdog and the system will reset.
+
+readonly NAME="system"
+readonly TIMEOUT=30
+readonly INTERVAL=10
+
+/bin/watchdogd > /dev/null 2>&1 &
+
+while true; do
+	wdt-kick "$NAME" "$TIMEOUT"
+	sleep "$INTERVAL"
+done

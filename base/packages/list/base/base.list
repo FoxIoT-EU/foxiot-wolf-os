@@ -8,6 +8,7 @@ dir /tmp 1777 0 0
 
 dir /etc 755 0 0
 file /etc/rc.init ${ROOT}/etc/rc.init 755 0 0
+file /etc/rc.wdt ${ROOT}/etc/rc.wdt 755 0 0
 slink /etc/mtab /proc/mounts 777 0 0
 file /etc/profile ${ROOT}/etc/profile 644 0 0
 file /etc/resolv.conf.static ${ROOT}/etc/resolv.conf.static 644 0 0
@@ -54,6 +55,7 @@ file /bin/gpiounexport ${ROOT}/bin/gpiounexport 755 0 0
 file /bin/mdns ${ROOT}/bin/mdns 755 0 0
 file /bin/ldd ${ROOT}/bin/ldd 755 0 0
 file /bin/watchdogd ${ROOT}/bin/watchdogd 755 0 0
+file /bin/wdt-kick ${ROOT}/bin/wdt-kick 755 0 0
 
 dir /lib 755 0 0
 file /lib/ld-linux.so.3 ${ROOT}/lib/ld-linux.so.3 755 0 0

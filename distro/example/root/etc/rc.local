@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Start watchdog
-/bin/watchdogd > /dev/null 2>&1 &
+/etc/rc.wdt > /dev/null 2>&1 &
 
 # Panic on out-of-memory
 echo 1 > /proc/sys/vm/panic_on_oom
@@ -90,6 +90,8 @@ if [ -b /dev/mmcblk0p1 ]; then
 	fsck.ext4 -y /dev/mmcblk0p1
 	mkdir /mnt/sdcard
 	mount -o noatime,nodiratime,lazytime /dev/mmcblk0p1 /mnt/sdcard/ && touch /mnt/sdcard/mounted
+	mkdir -p /mnt/sdcard/wdt
+	wdt-kick log /mnt/sdcard/wdt/wdt.log
 fi
 
 # Start netd
