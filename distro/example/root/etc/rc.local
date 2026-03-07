@@ -4,12 +4,12 @@
 /etc/rc.wdt > /dev/null 2>&1 &
 
 # Panic on out-of-memory
-echo 1 > /proc/sys/vm/panic_on_oom
+echo 2 > /proc/sys/vm/panic_on_oom
 
 LED_PATH=/sys/class/leds/yellow:debug
 
 # If button is pressed during boot
-if ! button; then	
+if ! button; then
 	# Blink LED to indicate recovery mode is active
 	echo timer > "$LED_PATH/trigger"
 	echo 100 > "$LED_PATH/delay_on"
@@ -39,7 +39,7 @@ echo /sbin/fdev > /proc/sys/kernel/hotplug
 # Setting eth0 interface up
 ifconfig eth0 up
 
-# Setting hostname  
+# Setting hostname
 mac=$(cat /sys/class/net/eth0/address)
 mac=${mac//:/}
 echo "wolf-$mac" > /proc/sys/kernel/hostname
@@ -59,31 +59,31 @@ elif [ $(( RESET_REG & 0x10 )) -ne 0 ]; then
 	RESET_STATUS="CPU"
 elif [ $(( RESET_REG & 0x20 )) -ne 0 ]; then
 	RESET_STATUS="watchdog"
-fi 
+fi
 # Clear reset register
 devmem 0xB000006C 32 0xFF
 # Write status to file
 echo -ne $RESET_STATUS > /run/wolf/reset_source
 
-# Apply firewall - drop all Incoming port expect SSH
-/etc/firewall
-
-# Start connection monitor
-/etc/conn-monitor.sh >/dev/null 2>&1 &
-
 # Mount read-only NAND flash
 ubiattach /dev/ubi_ctrl -p /dev/mtd4
 mount -t ubifs -r /dev/ubi0_0 /mnt/rodata
-
-# Start WireGuard
-/etc/rc.wireguard /mnt/rodata/wireguard/wg0.conf > /dev/null 2>&1 &
 
 # Mount writable NAND flash
 ubiattach /dev/ubi_ctrl -p /dev/mtd5
 mount -t ubifs /dev/ubi1_0 /mnt/rwdata
 
+# Apply firewall - drop all Incoming port expect SSH
+/etc/firewall
+
 # Start dropbear
 /etc/rc.dropbear > /dev/null 2>&1 &
+
+# Start connection monitor
+/etc/conn-monitor.sh >/dev/null 2>&1 &
+
+# Start WireGuard
+/etc/rc.wireguard /mnt/rodata/wireguard/wg0.conf > /dev/null 2>&1 &
 
 # Mount SD card
 if [ -b /dev/mmcblk0p1 ]; then
@@ -101,7 +101,8 @@ fi
 mkdir -p /var/lib/chrony
 touch /var/lib/chrony/drift
 
-for j in $(seq 0 5); do
+# Retry long enough to ensure the controller has internet connectivity
+for j in $(seq 0 30); do
 	for i in $(pidof chronyd); do
 		kill -9 "$i"
 		sleep 1
@@ -125,4 +126,3 @@ if [ -x /mnt/rwdata/rc.local ] ; then
 fi
 
 exit 0
-

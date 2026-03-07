@@ -3,6 +3,8 @@
 ## Table of Contents
 
 - [Accessing the Controller](#accessing-the-controller)
+- [Recovery Mode](#recovery-mode)
+- [Reset Source Detection](#reset-source-detection)
 - [Compiling Your First Application](#compiling-your-first-application)
 - [Adding Your Application to the Firmware](#adding-your-application-to-the-firmware)
 - [Configuring netd (Network Daemon)](#configuring-netd-network-daemon)
@@ -102,6 +104,54 @@ For secure, passwordless login:
 
 > 💡 You can add multiple public keys (one per line) if you want to allow access for several users.
 > These keys will be automatically included into the firmware, allowing secure, passwordless access after flashing.
+
+---
+
+## Recovery Mode
+
+The controller supports a built-in recovery mode activated by pressing the physical button during boot. This is useful when the network configuration is broken and you can no longer access the controller remotely.
+
+### How It Works
+
+1. Hold the button while the controller is booting
+2. The yellow debug LED starts blinking rapidly (100ms on/off)
+3. Release the button within 5 seconds to activate recovery mode
+4. The controller loads `/etc/netd_recovery.conf` instead of the normal network configuration
+5. The LED stops blinking and the controller continues booting with recovery network settings
+
+If the button is not released within 5 seconds, recovery mode is not activated and the controller boots normally.
+
+> 💡 The recovery network configuration (`netd_recovery.conf`) typically uses DHCP, allowing you to regain SSH access even if the normal static IP configuration is wrong.
+
+### Customizing the Recovery Configuration
+
+Edit `root/etc/netd_recovery.conf` in your project directory before building. This file follows the same JSON format as the normal `netd.conf` — see [Configuring netd](#configuring-netd-network-daemon) for details.
+
+---
+
+## Reset Source Detection
+
+On every boot, the controller reads the hardware reset source register and writes the result to `/run/wolf/reset_source`. This lets your application determine why the last reboot occurred.
+
+### Reading the Reset Source
+
+```bash
+cat /run/wolf/reset_source
+```
+
+### Possible Values
+
+| Value | Description |
+|---|---|
+| `power` | Power-on reset (cold boot) |
+| `reset pin` | External reset pin was triggered |
+| `low voltage` | Supply voltage dropped below threshold |
+| `reboot` | Software reboot (`reboot` command) |
+| `CPU` | CPU reset |
+| `watchdog` | Hardware watchdog timer expired (see [Watchdog](watchdog.md)) |
+| `unknown` | Could not determine reset source |
+
+> 💡 The `watchdog` value indicates the system was reset because `watchdogd` stopped kicking the hardware watchdog — either intentionally (a client expired) or because the daemon itself crashed.
 
 ---
 
