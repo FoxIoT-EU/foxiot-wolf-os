@@ -121,7 +121,7 @@ The controller supports a built-in recovery mode activated by pressing the physi
 
 If the button is not released within 5 seconds, recovery mode is not activated and the controller boots normally.
 
-> 💡 The recovery network configuration (`netd_recovery.conf`) typically uses DHCP, allowing you to regain SSH access even if the normal static IP configuration is wrong.
+> 💡 The recovery network configuration (`netd_recovery.conf`) provides a known fallback network setup. The example distro uses a static IP (`192.168.2.127`), but you can also configure it to use DHCP — whichever makes it easier to regain SSH access in your environment.
 
 ### Customizing the Recovery Configuration
 
