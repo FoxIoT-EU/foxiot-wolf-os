@@ -4,6 +4,8 @@ readonly DEFAULT_CONF_FILE=/etc/netd.conf
 readonly RECOVERY_CONF_FILE=/run/netd/netd_recovery.conf
 readonly USER_CONF_FILE=/mnt/rwdata/app/netd.conf
 readonly USER_CONF_RO_FILE=/mnt/rodata/netd/netd.conf
+readonly LOG_RAM_DIR=/var/log/netd/
+readonly LOG_SD_DIR=/mnt/sdcard/netd/
 
 if [ -f $RECOVERY_CONF_FILE ]; then
 	CONF_FILE=$RECOVERY_CONF_FILE
@@ -17,12 +19,29 @@ else
 	exit 1
 fi
 
+# Create and prepare log folder
+if [ -f /mnt/sdcard/mounted ]; then
+	mkdir -p "$LOG_SD_DIR"
+	ln -s "$LOG_SD_DIR" "${LOG_RAM_DIR%/}"
+	echo -e "s1000000\nn5" > "$LOG_SD_DIR"config
+	LOG_DIR=$LOG_SD_DIR
+else
+	mkdir -p "$LOG_RAM_DIR"
+	echo -e "s100000\nn4" > "$LOG_RAM_DIR"config
+	LOG_DIR=$LOG_RAM_DIR
+fi
+
+mkdir -p /run/netd
+FIFO=/run/netd/log.fifo
+mkfifo "$FIFO" 2>/dev/null
+
 #start netd
 while true; do
 	# wwan0 interface must be down before netd starts
 	ifconfig wwan0 down
 	sleep 1
-	/bin/netd $CONF_FILE
+	svlogd -tt "$LOG_DIR" < "$FIFO" &
+	/bin/netd $CONF_FILE > "$FIFO" 2>&1
 	RET=$?
 
 	# If netd exits with code 100, it means JSON parsing failed
