@@ -35,20 +35,15 @@ mkdir -p fw_keys/YOUR_PROJECT_NAME
 util/fw-sign/fw-keygen fw_keys/YOUR_PROJECT_NAME
 ```
 
-Then add the signing key and public key to your distro:
+Then deploy the public key and update `FW_KEY` path in your distro:
 
 ```bash
 cp fw_keys/YOUR_PROJECT_NAME/public.key distro/YOUR_PROJECT_NAME/root/etc/fw-verify.pub
 ```
 
-Edit `distro/YOUR_PROJECT_NAME/Makefile` and add:
+Edit `distro/YOUR_PROJECT_NAME/Makefile` and update the `FW_KEY` path to match your project:
 ```make
 FW_KEY = ../../fw_keys/YOUR_PROJECT_NAME/secret.key
-```
-
-Add the public key to `distro/YOUR_PROJECT_NAME/rootfs.list`:
-```text
-file /etc/fw-verify.pub root/etc/fw-verify.pub 644 0 0
 ```
 
 > 💡 For more details, see [Firmware Signing](firmware-signing.md).
