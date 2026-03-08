@@ -31,6 +31,14 @@ This guide describes how to build the **FoxIoT Gateway OS** for the **FoxIoT Wol
 ./build-in-docker.sh --rebuild-image foxiot
 ```
 
+### Generate firmware signing keys
+
+```sh
+./build-in-docker.sh --keygen myproject
+```
+
+See [Firmware Signing](firmware-signing.md) for full setup instructions.
+
 ### List available distros
 
 ```sh

@@ -26,13 +26,11 @@ Replace `YOUR_PROJECT_NAME` with your own project name (for example, your compan
 
 ## 3. Set Up Firmware Signing
 
-Firmware signing is required. Generate an Ed25519 keypair and configure your distro:
+Firmware signing is required. Generate an Ed25519 keypair for your project:
 
 ```bash
 git submodule update --init
-cd util/fw-sign && make host && cd ../..
-mkdir -p fw_keys/YOUR_PROJECT_NAME
-util/fw-sign/fw-keygen fw_keys/YOUR_PROJECT_NAME
+./build-in-docker.sh --keygen YOUR_PROJECT_NAME
 ```
 
 Then deploy the public key and update `FW_KEY` path in your distro:
@@ -46,7 +44,7 @@ Edit `distro/YOUR_PROJECT_NAME/Makefile` and update the `FW_KEY` path to match y
 FW_KEY = ../../fw_keys/YOUR_PROJECT_NAME/secret.key
 ```
 
-> 💡 For more details, see [Firmware Signing](firmware-signing.md).
+> 💡 To build signing tools without Docker, see [Firmware Signing](firmware-signing.md).
 
 ---
 

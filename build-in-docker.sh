@@ -2,7 +2,8 @@
 
 # build-in-docker.sh - Build the FoxIoT gateway OS using Docker
 # Usage:
-#   ./build-in-docker.sh [--rebuild-image] [--clean] [--help] <distro-name>
+#   ./build-in-docker.sh [--rebuild-image] [--clean] [--help] [<distro-name>]
+#   ./build-in-docker.sh --keygen <name>
 
 IMAGE_NAME="wolf-os-builder"
 DOCKERFILE_PATH="docker/Dockerfile"
@@ -11,26 +12,29 @@ WORKDIR_IN_CONTAINER="/project"
 
 REBUILD_IMAGE=0
 CLEAN=0
+KEYGEN=""
 DISTRO=""
 
 print_help() {
-  echo "Usage: $0 [OPTIONS] <distro-name>"
+  echo "Usage: $0 [OPTIONS] [<distro-name>]"
   echo
   echo "Build the FoxIoT gateway OS inside Docker."
   echo
   echo "Options:"
   echo "  --rebuild-image     Rebuild the Docker image even if it exists"
   echo "  --clean             Clean previous build artifacts"
+  echo "  --keygen <name>     Generate firmware signing keypair for a project"
   echo "  --list-distros      List available distros in the 'distro/' directory"
   echo "  --help              Show this help message"
   echo
   echo "Arguments:"
-  echo "  <distro-name>       Required. Name of the distro to build (e.g., example)"
+  echo "  <distro-name>       Name of the distro to build (e.g., example)"
   echo
   echo "Examples:"
   echo "  $0 example"
   echo "  $0 --clean example"
   echo "  $0 --rebuild-image example"
+  echo "  $0 --keygen myproject"
   echo "  $0 --list-distros"
 }
 
@@ -49,6 +53,14 @@ while [ "$#" -gt 0 ]; do
       ;;
     --clean)
       CLEAN=1
+      ;;
+    --keygen)
+      shift
+      if [ -z "$1" ] || echo "$1" | grep -q '^--'; then
+        echo "Error: --keygen requires a project name argument"
+        exit 1
+      fi
+      KEYGEN="$1"
       ;;
     --list-distros)
       list_distros
@@ -70,6 +82,12 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
+# --- Check Docker ---
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Error: Docker is not installed or not in PATH."
+  exit 1
+fi
+
 # --- Clean build artifacts if requested ---
 if [ "$CLEAN" -eq 1 ]; then
   echo "Cleaning build artifacts..."
@@ -90,17 +108,38 @@ else
   echo "Docker image '$IMAGE_NAME' already exists."
 fi
 
+# --- Generate signing keys if requested ---
+if [ -n "$KEYGEN" ]; then
+  if [ -d "fw_keys/$KEYGEN" ]; then
+    echo "Error: fw_keys/$KEYGEN already exists"
+    exit 1
+  fi
+  mkdir -p "fw_keys/$KEYGEN"
+  echo "Building fw-keygen and generating keypair for: $KEYGEN"
+  docker run --rm \
+    --entrypoint sh \
+    -u "$(id -u):$(id -g)" \
+    -v "$BUILD_DIR":"$WORKDIR_IN_CONTAINER" \
+    -w "$WORKDIR_IN_CONTAINER" \
+    "$IMAGE_NAME" \
+    -c "make host -C util/fw-sign && util/fw-sign/fw-keygen 'fw_keys/$KEYGEN'"
+  EXIT_CODE=$?
+  if [ "$EXIT_CODE" -eq 0 ]; then
+    echo "Keys generated in fw_keys/$KEYGEN/"
+    echo "Next steps:"
+    echo "  cp fw_keys/$KEYGEN/public.key distro/<YOUR_DISTRO>/root/etc/fw-verify.pub"
+    echo "  Set FW_KEY = ../../fw_keys/$KEYGEN/secret.key in your distro Makefile"
+  else
+    echo "Key generation failed."
+  fi
+  [ -z "$DISTRO" ] && exit "$EXIT_CODE"
+fi
+
 if [ -z "$DISTRO" ]; then
   echo "Error: You must specify a distro name"
   list_distros
   echo
   print_help
-  exit 1
-fi
-
-# --- Check Docker ---
-if ! command -v docker >/dev/null 2>&1; then
-  echo "Error: Docker is not installed or not in PATH."
   exit 1
 fi
 

@@ -4,7 +4,6 @@
 
 - [Overview](#overview)
 - [Setup](#setup)
-  - [Building the Tools](#building-the-tools)
   - [Generating Keys](#generating-keys)
   - [Configuring Your Distro](#configuring-your-distro)
 - [How It Works](#how-it-works)
@@ -26,26 +25,25 @@ Every distro must set `FW_KEY` in its Makefile — the build will fail without i
 
 ## Setup
 
-### Building the Tools
+### Generating Keys
 
-The signing tools are in `util/fw-sign/`. First, initialize the Monocypher submodule and build:
+Initialize the submodule and generate an Ed25519 keypair for your project:
 
 ```bash
 git submodule update --init
-cd util/fw-sign
-make host       # builds fw-sign + fw-keygen (for your build machine)
-make target     # builds fw-verify (ARM cross-compile for the device)
-make            # both
+./build-in-docker.sh --keygen YOUR_PROJECT
 ```
 
-### Generating Keys
-
-Generate an Ed25519 keypair for your project:
+Without Docker, build the tools and generate keys manually:
 
 ```bash
+git submodule update --init
+make host -C util/fw-sign
 mkdir -p fw_keys/YOUR_PROJECT
 util/fw-sign/fw-keygen fw_keys/YOUR_PROJECT
 ```
+
+> 💡 To cross-compile `fw-verify` for the device, run `make target -C util/fw-sign`.
 
 This creates:
 - `fw_keys/YOUR_PROJECT/secret.key` (64 bytes, mode 0600) — stays on build machine only
