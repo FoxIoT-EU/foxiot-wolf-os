@@ -44,6 +44,7 @@ endif
 
 ifdef PASSWORD
 passwd:
+	@echo "\033[1;31m⚠️  WARNING: Password authentication is enabled. Do not ship to production — see docs/security.md\033[0m"
 	/bin/echo "root:`mkpasswd $(PASSWORD)`:0:0:root:/root:/bin/sh" >root/etc/passwd
 else
 passwd:
