@@ -11,6 +11,7 @@ Welcome to the FoxIoT Gateway OS build system. This repository helps you build a
 - [Building with Docker](docs/docker-build.md)
 - [Watchdog](docs/watchdog.md)
 - [Firmware Signing](docs/firmware-signing.md)
+- [Security](docs/security.md)
 - [Third-Party Licenses](docs/licenses.md)
 
 ---
