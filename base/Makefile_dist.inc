@@ -83,6 +83,9 @@ endif
 	@if [ ! -x $(FW_SIGN) ]; then echo "error: fw-sign not found at $(FW_SIGN)"; echo "  Build it first: make host -C util/fw-sign/"; exit 1; fi
 	@if [ ! -f $(FW_KEY) ]; then echo "error: signing key not found: $(FW_KEY)"; echo "  Generate keys: util/fw-sign/fw-keygen fw_keys/YOUR_PROJECT/"; echo "  Then set FW_KEY in your distro Makefile: FW_KEY = ../../fw_keys/YOUR_PROJECT/secret.key"; exit 1; fi
 	$(FW_SIGN) $(IMAGE_PREFIX).itb $(FW_KEY)
+ifdef PASSWORD
+	@echo "\033[1;31m⚠️  WARNING: Password authentication is enabled. Do not ship to production — see docs/security.md\033[0m"
+endif
 
 package:
 	INITRD_SOURCE_PATH=$(INITRD_SOURCE_PATH)/root $(GEN_INIT_FS) -I$(INITRD_SOURCE_PATH) -c package.list >package.cpio
