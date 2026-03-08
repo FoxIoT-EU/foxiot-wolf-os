@@ -59,29 +59,21 @@ ssh root@YOUR_CONTROLLER_IP
 ```
 
 - Default user: `root`
-- Default password: `foxiot`
+- Authentication: SSH public key (see [Getting Started - Add Your SSH Key](getting-started.md#5-add-your-ssh-key))
 
 ---
 
 ### Default Root Password and Security Settings
 
-The root password is managed through your project Makefile (located at `distro/YOUR_PROJECT_NAME/Makefile`):
+By default, password authentication is **disabled** to comply with the EU Cyber Resilience Act (CRA). See [Security](security.md) for details.
+
+To enable password authentication for development or testing, uncomment and set `PASSWORD` in your project Makefile (`distro/YOUR_PROJECT_NAME/Makefile`):
 
 ```make
-PASSWORD = "foxiot"
+PASSWORD = "your_unique_password"
 ```
 
-> 💡 **Important Security Note:**
->
-> To change the root password, edit this line before building the firmware.
->
-> To **disable password login completely**, comment it out by adding a `#`:
->
-> ```make
-> # PASSWORD = "foxiot"
-> ```
->
-> It is highly recommended to disable root password login and rely only on SSH public key authentication for accessing the controller.
+> ⚠️ **Do not ship devices with password authentication enabled.** Under the CRA (Annex I, Part I), products must not have default passwords common across devices and must be secure by default.
 
 ---
 
