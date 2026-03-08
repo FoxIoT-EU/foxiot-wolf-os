@@ -61,7 +61,27 @@ IMAGE_PREFIX = your_project
 
 ---
 
-## 5. Build the Image
+## 5. Add Your SSH Key
+
+Add your SSH public key to enable login to the controller.
+
+If you don't have an SSH key yet, generate one on your computer:
+
+```bash
+ssh-keygen -t ed25519 -C "you@example.com"
+```
+
+Then copy your public key into the project:
+
+```bash
+cp ~/.ssh/id_ed25519.pub distro/YOUR_PROJECT_NAME/root/etc/dropbear/authorized_keys
+```
+
+> 💡 You can add multiple public keys (one per line). To use password authentication instead, see [Developer Quick Start - Security Settings](developer-quick-start.md#default-root-password-and-security-settings).
+
+---
+
+## 6. Build the Image
 
 Build your firmware image using Docker:
 ```bash
@@ -74,11 +94,10 @@ The output `.itb` file will appear inside the `build/` directory.
 
 ---
 
-## 6. Copy the Image to the Controller
+## 7. Copy the Image to the Controller
 
 After building, copy the `.itb` image file to your controller:
 - Default user: `root`
-- Default password: `foxiot`
 ```bash
 scp -O build/root_YOUR_PROJECT_NAME_0.1.1.itb root@YOUR_CONTROLLER_IP:/tmp/
 ```
@@ -89,11 +108,10 @@ Replace `YOUR_CONTROLLER_IP` with your controller’s IP address.
 
 ---
 
-## 7. Install the New Image
+## 8. Install the New Image
 
 Log in to the controller via SSH:
 - Default user: `root`
-- Default password: `foxiot`
 ```bash
 ssh root@YOUR_CONTROLLER_IP
 ```
@@ -104,7 +122,7 @@ install /tmp/root_YOUR_PROJECT_NAME_0.1.1.itb
 
 ---
 
-## 8. Reboot the Controller
+## 9. Reboot the Controller
 
 Finally, reboot the controller to boot into the new system:
 ```bash
@@ -117,7 +135,7 @@ reboot
 
 - Replace `YOUR_PROJECT_NAME` consistently everywhere with your actual project name.
 - Replace `YOUR_CONTROLLER_IP` with the real IP address of your controller.
-- Make sure you have SSH access to the controller (default user: `root`).
+- Make sure you have SSH access to the controller (default user: `root`, SSH key required).
 
 ---
 
