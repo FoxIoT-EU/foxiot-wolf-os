@@ -1,5 +1,5 @@
 VERSION = 0.1.2
-PASSWORD = "foxiot"
+# PASSWORD = "foxiot"
 IMAGE_PREFIX = root_example_$(VERSION)
 MODEL = wolf
 INITRD_LIST = rootfs.list
