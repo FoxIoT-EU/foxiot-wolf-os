@@ -56,6 +56,7 @@ file /bin/mdns ${ROOT}/bin/mdns 755 0 0
 file /bin/ldd ${ROOT}/bin/ldd 755 0 0
 file /bin/watchdogd ${ROOT}/bin/watchdogd 755 0 0
 file /bin/wdt-kick ${ROOT}/bin/wdt-kick 755 0 0
+file /bin/fw-verify ${ROOT}/bin/fw-verify 755 0 0
 
 dir /lib 755 0 0
 file /lib/ld-linux.so.3 ${ROOT}/lib/ld-linux.so.3 755 0 0

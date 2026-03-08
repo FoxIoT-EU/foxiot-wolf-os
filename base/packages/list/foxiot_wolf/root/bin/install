@@ -2,8 +2,17 @@
 
 set -e
 
+if [ ! -f /etc/fw-verify.pub ]; then
+	echo "install: public key missing: /etc/fw-verify.pub" >&2
+	exit 1
+fi
+
+if ! fw-verify "$1" /etc/fw-verify.pub; then
+	echo "install: firmware verification failed: $1" >&2
+	exit 1
+fi
+
 flash_erase /dev/mtd2 0 0
 nandwrite -p /dev/mtd2 "$1"
 
 exit 0
-

@@ -2,3 +2,5 @@ build/
 .build/
 *.itb
 distro/*/root/etc/passwd
+distro/*/root/etc/fw-verify.pub
+fw_keys/

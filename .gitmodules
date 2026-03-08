@@ -1,0 +1,3 @@
+[submodule "util/fw-sign/Monocypher"]
+	path = util/fw-sign/Monocypher
+	url = https://github.com/LoupVaillant/Monocypher.git

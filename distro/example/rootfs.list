@@ -29,6 +29,7 @@ file /etc/firewall root/etc/firewall 755 0 0
 file /etc/nologin root/etc/nologin 600 0 0
 file /etc/profile root/etc/profile 644 0 0
 file /etc/passwd root/etc/passwd 644 0 0
+file /etc/fw-verify.pub root/etc/fw-verify.pub 644 0 0
 
 dir /etc/dropbear 755 0 0
 dir /root/.ssh 755 0 0

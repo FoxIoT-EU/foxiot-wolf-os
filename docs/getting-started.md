@@ -24,7 +24,38 @@ Replace `YOUR_PROJECT_NAME` with your own project name (for example, your compan
 
 ---
 
-## 3. Set the Project Prefix
+## 3. Set Up Firmware Signing
+
+Firmware signing is required. Generate an Ed25519 keypair and configure your distro:
+
+```bash
+git submodule update --init
+cd util/fw-sign && make host && cd ../..
+mkdir -p fw_keys/YOUR_PROJECT_NAME
+util/fw-sign/fw-keygen fw_keys/YOUR_PROJECT_NAME
+```
+
+Then add the signing key and public key to your distro:
+
+```bash
+cp fw_keys/YOUR_PROJECT_NAME/public.key distro/YOUR_PROJECT_NAME/root/etc/fw-verify.pub
+```
+
+Edit `distro/YOUR_PROJECT_NAME/Makefile` and add:
+```make
+FW_KEY = ../../fw_keys/YOUR_PROJECT_NAME/secret.key
+```
+
+Add the public key to `distro/YOUR_PROJECT_NAME/rootfs.list`:
+```text
+file /etc/fw-verify.pub root/etc/fw-verify.pub 644 0 0
+```
+
+> 💡 For more details, see [Firmware Signing](firmware-signing.md).
+
+---
+
+## 4. Set the Project Prefix
 
 Edit the `Makefile` inside your new project directory and change the `IMAGE_PREFIX` to match your project name:
 ```bash
@@ -37,7 +68,7 @@ IMAGE_PREFIX = your_project
 
 ---
 
-## 4. Build the Image
+## 5. Build the Image
 
 Build your firmware image using Docker:
 ```bash
@@ -50,7 +81,7 @@ The output `.itb` file will appear inside the `build/` directory.
 
 ---
 
-## 5. Copy the Image to the Controller
+## 6. Copy the Image to the Controller
 
 After building, copy the `.itb` image file to your controller:
 - Default user: `root`
@@ -65,7 +96,7 @@ Replace `YOUR_CONTROLLER_IP` with your controller’s IP address.
 
 ---
 
-## 6. Install the New Image
+## 7. Install the New Image
 
 Log in to the controller via SSH:
 - Default user: `root`
@@ -80,7 +111,7 @@ install /tmp/root_YOUR_PROJECT_NAME_0.1.1.itb
 
 ---
 
-## 7. Reboot the Controller
+## 8. Reboot the Controller
 
 Finally, reboot the controller to boot into the new system:
 ```bash

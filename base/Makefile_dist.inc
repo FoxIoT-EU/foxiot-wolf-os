@@ -10,6 +10,7 @@ IMAGE_PREFIX ?= image
 USB_PATH ?= ""
 DRAM ?= NUC980DF61YC.ini
 TYPE ?= spinand
+FW_SIGN ?= ../../util/fw-sign/fw-sign
 
 ITS_FIT_DESCRIPTION ?= default
 ITS_IMAGE_KERNEL_DESCRIPTION ?= linux
@@ -75,7 +76,13 @@ fit-image:
 	mkimage -D "-W no-unit_address_vs_reg" -f $(BUILD)/fit-image.its $(IMAGE_PREFIX).itb
 	$(ALIGN_FS) $(IMAGE_PREFIX).itb
 	chmod 755 $(IMAGE_PREFIX).itb
-	
+ifndef FW_KEY
+	$(error FW_KEY is not set. Firmware signing is required. See docs/firmware-signing.md)
+endif
+	@if [ ! -x $(FW_SIGN) ]; then echo "error: fw-sign not found at $(FW_SIGN)"; echo "  Build it first: make host -C util/fw-sign/"; exit 1; fi
+	@if [ ! -f $(FW_KEY) ]; then echo "error: signing key not found: $(FW_KEY)"; echo "  Generate keys: util/fw-sign/fw-keygen fw_keys/YOUR_PROJECT/"; echo "  Then set FW_KEY in your distro Makefile: FW_KEY = ../../fw_keys/YOUR_PROJECT/secret.key"; exit 1; fi
+	$(FW_SIGN) $(IMAGE_PREFIX).itb $(FW_KEY)
+
 package:
 	INITRD_SOURCE_PATH=$(INITRD_SOURCE_PATH)/root $(GEN_INIT_FS) -I$(INITRD_SOURCE_PATH) -c package.list >package.cpio
 

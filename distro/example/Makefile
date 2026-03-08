@@ -7,5 +7,6 @@ ROOTFS_LIST = initrd.list
 IMAGE_ITS ?= image.its
 DRAM ?= NUC980DF71YC.ini
 DEVICETREE_DIR_PATH=devicetrees
+FW_KEY = ../../fw_keys/example/secret.key
 
 include ../../base/Makefile_dist.inc
