@@ -151,10 +151,13 @@
 			reg = <0x50>;
 			pagesize = <8>;
 			vcc-supply = <&supply_fixed_3v3>;
-			#address-cells = <1>;
-			#size-cells = <1>;
-			mac_address0: mac_address@fa {
-				reg = <0xfa 0x06>;
+			nvmem-layout {
+				compatible = "fixed-layout";
+				#address-cells = <1>;
+				#size-cells = <1>;
+				mac_address0: mac_address@fa {
+					reg = <0xfa 0x06>;
+				};
 			};
 		};
 	};
