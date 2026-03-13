@@ -21,6 +21,7 @@ dir /var/log/ 755 0 0
 
 dir /etc 755 0 0
 file /etc/rc.local root/etc/rc.local 755 0 0
+file /etc/syslog.conf root/etc/syslog.conf 644 0 0
 file /etc/rc.netd root/etc/rc.netd 755 0 0
 file /etc/netd_recovery.conf root/etc/netd_recovery.conf 644 0 0
 file /etc/rc.dropbear root/etc/rc.dropbear 755 0 0
@@ -37,6 +38,7 @@ file /root/.ssh/authorized_keys root/etc/dropbear/authorized_keys 400 0 0
 
 dir /bin 755 0 0
 file /bin/fdev root/bin/fdev 755 0 0
+file /bin/ssh-users root/bin/ssh-users 755 0 0
 
 slink /usr/bin /bin 777 0 0
 

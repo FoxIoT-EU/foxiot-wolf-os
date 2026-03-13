@@ -25,3 +25,32 @@ PASSWORD = "your_unique_password"
 See [Developer Quick Start - Security Settings](developer-quick-start.md#default-root-password-and-security-settings) for details.
 
 > ⚠️ **Do not ship devices with password authentication enabled.** Each device would share the same password with no mechanism to change it at runtime.
+
+## Audit Logging
+
+### Auth Event Logging
+
+Wolf-OS logs all authentication events via syslog. The `auth.*` facility is captured and persisted across reboots.
+
+- During boot, syslog writes auth events to `/var/log/syslog/auth.log`
+- After storage is mounted, logs are persisted to `/mnt/rwdata/log/auth.log`
+
+To view auth logs on a running controller:
+
+```bash
+cat /mnt/rwdata/log/auth.log
+```
+
+### Identifying SSH Users
+
+The `ssh-users` utility lists SSH key fingerprints and their owners from `/root/.ssh/authorized_keys`.
+
+```bash
+# List all keys with fingerprints
+ssh-users
+
+# Find which key matches a fingerprint (partial match)
+ssh-users <fingerprint>
+```
+
+This is useful for identifying which key was used for a login by cross-referencing with Dropbear's auth log entries.

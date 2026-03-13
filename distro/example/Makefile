@@ -1,4 +1,4 @@
-VERSION = 0.1.2
+VERSION = 0.1.3
 # PASSWORD = "foxiot"
 IMAGE_PREFIX = root_example_$(VERSION)
 MODEL = wolf

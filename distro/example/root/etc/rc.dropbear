@@ -33,7 +33,7 @@ while true; do
 		-r "$KEYDIR/dropbear_host_key_rsa" \
 		-r "$KEYDIR/dropbear_host_key_ecdsa" \
 		-r "$KEYDIR/dropbear_host_key_ed25519" \
-		>/dev/null 2>&1
+		2>&1 | logger -t dropbear -p auth.info
 
 	# If Dropbear crashed or failed, try regenerating any missing keys in the temporary overlay 
 	[ $? -ne 0 ] && /bin/dropbear -F -R

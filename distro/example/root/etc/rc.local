@@ -3,6 +3,10 @@
 # Start watchdog
 /etc/rc.wdt > /dev/null 2>&1 &
 
+# start syslog (auth logging)
+mkdir -p /var/log/syslog
+syslogd -f /etc/syslog.conf -s 250 -b 1
+
 # Panic on out-of-memory
 echo 2 > /proc/sys/vm/panic_on_oom
 
@@ -72,6 +76,12 @@ mount -t ubifs -r /dev/ubi0_0 /mnt/rodata
 # Mount writable NAND flash
 ubiattach /dev/ubi_ctrl -p /dev/mtd5
 mount -t ubifs /dev/ubi1_0 /mnt/rwdata
+
+# persist auth log to rwdata
+mkdir -p /mnt/rwdata/log
+cat /var/log/syslog/auth.log >> /mnt/rwdata/log/auth.log 2>/dev/null
+rm -rf /var/log/syslog
+ln -s /mnt/rwdata/log /var/log/syslog
 
 # Apply firewall - drop all Incoming port expect SSH
 /etc/firewall

@@ -99,7 +99,7 @@ The output `.itb` file will appear inside the `build/` directory.
 After building, copy the `.itb` image file to your controller:
 - Default user: `root`
 ```bash
-scp -O build/root_YOUR_PROJECT_NAME_0.1.1.itb root@YOUR_CONTROLLER_IP:/tmp/
+scp -O build/root_YOUR_PROJECT_NAME_0.1.3.itb root@YOUR_CONTROLLER_IP:/tmp/
 ```
 Replace `YOUR_CONTROLLER_IP` with your controller’s IP address.
 
@@ -117,7 +117,7 @@ ssh root@YOUR_CONTROLLER_IP
 ```
 Then install the new firmware:
 ```bash
-install /tmp/root_YOUR_PROJECT_NAME_0.1.1.itb
+install /tmp/root_YOUR_PROJECT_NAME_0.1.3.itb
 ```
 
 ---
