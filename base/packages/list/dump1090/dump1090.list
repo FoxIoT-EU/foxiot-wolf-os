@@ -1,3 +1,0 @@
-dir /bin 755 0 0
-file /bin/dump1090 ${ROOT}/bin/dump1090 755 0 0
-

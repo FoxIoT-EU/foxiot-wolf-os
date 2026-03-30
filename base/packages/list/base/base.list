@@ -32,13 +32,11 @@ slink /bin/sh /bin/busybox 777 0 0
 slink /bin/fuser /bin/busybox 777 0 0
 slink /bin/login /bin/busybox 777 0 0
 file /bin/reboot ${ROOT}/bin/reboot 755 0 0
-file /bin/ntpclient ${ROOT}/bin/ntpclient 755 0 0
 file /bin/dropbear ${ROOT}/bin/dropbear 755 0 0
 file /bin/dropbearkey ${ROOT}/bin/dropbearkey 755 0 0
 file /bin/dbclient ${ROOT}/bin/dbclient 755 0 0
 file /bin/scp ${ROOT}/bin/scp 755 0 0
 slink /bin/ssh /bin/dbclient 777 0 0
-file /bin/dmesg ${ROOT}/bin/dmesg 755 0 0
 file /bin/rcomm ${ROOT}/bin/rcomm 755 0 0
 file /bin/gpiod ${ROOT}/bin/gpiod 755 0 0
 file /bin/gpiodset ${ROOT}/bin/gpiodset 755 0 0
@@ -52,7 +50,6 @@ file /bin/netd ${ROOT}/bin/netd 755 0 0
 slink /bin/netdc /bin/netd 777 0 0
 file /bin/gpioexport ${ROOT}/bin/gpioexport 755 0 0
 file /bin/gpiounexport ${ROOT}/bin/gpiounexport 755 0 0
-file /bin/mdns ${ROOT}/bin/mdns 755 0 0
 file /bin/ldd ${ROOT}/bin/ldd 755 0 0
 file /bin/watchdogd ${ROOT}/bin/watchdogd 755 0 0
 file /bin/wdt-kick ${ROOT}/bin/wdt-kick 755 0 0

@@ -1,3 +1,0 @@
-dir /bin 755 0 0
-file /bin/multimon-ng ${ROOT}/bin/multimon-ng 755 0 0
-
