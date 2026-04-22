@@ -36,7 +36,7 @@ sleep 5
 
 # Create routes
 ALLOWED_IPS=$(grep AllowedIPs < "$WG_CONF_PATH")
-if [ -z "$ADDR" ]; then
+if [ -z "$ALLOWED_IPS" ]; then
 	echo "Failed to find the 'AllowedIPs' field in the file: $WG_CONF_PATH"
 	exit 1
 fi
