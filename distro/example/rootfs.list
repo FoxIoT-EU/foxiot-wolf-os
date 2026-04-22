@@ -8,7 +8,7 @@
 #include "ext4_utils.list"
 #include "chrony.list"
 #include "wireguard.list"
-// #include "openvpn_3.3.0.list"
+// #include "openvpn_2.7.1.list"
 #include "libstdc++.list"
 
 
