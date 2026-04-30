@@ -5,7 +5,7 @@
 
 # start syslog (auth logging)
 mkdir -p /var/log/syslog
-syslogd -f /etc/syslog.conf -s 250 -b 1
+syslogd -C32 -f /etc/syslog.conf -s 250 -b 1
 
 # Panic on out-of-memory
 echo 2 > /proc/sys/vm/panic_on_oom
