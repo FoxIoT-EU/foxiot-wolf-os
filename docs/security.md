@@ -1,5 +1,7 @@
 # Security
 
+> For the full set of CRA integrator obligations (Annex II point 8(f)), see [CRA Integration Guide](cra-integration-guide.md).
+
 ## Authentication
 
 ### Default: SSH Public Key Only

@@ -13,6 +13,7 @@ Welcome to the FoxIoT Gateway OS build system. This repository helps you build a
 - [Building the Kernel](docs/kernel-build.md)
 - [Firmware Signing](docs/firmware-signing.md)
 - [Security](docs/security.md)
+- [CRA Integration Guide](docs/cra-integration-guide.md)
 - [Third-Party Licenses](docs/licenses.md)
 
 ---
