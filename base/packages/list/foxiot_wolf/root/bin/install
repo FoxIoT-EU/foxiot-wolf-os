@@ -9,10 +9,12 @@ fi
 
 if ! fw-verify "$1" /etc/fw-verify.pub; then
 	echo "install: firmware verification failed: $1" >&2
+	logger -t install -p auth.warning "firmware update REJECTED: $1 (signature verification failed)"
 	exit 1
 fi
 
 flash_erase /dev/mtd2 0 0
 nandwrite -p /dev/mtd2 "$1"
 
+logger -t install -p auth.notice "firmware update written to update area: $1 (current: $(cat /VERSION 2>/dev/null)); active after reboot"
 exit 0
