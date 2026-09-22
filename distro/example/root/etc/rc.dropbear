@@ -19,7 +19,7 @@ generate_key_if_missing() {
 
 
 # Ensure all keys exist (and regenerate if needed)
-for TYPE in dss rsa ecdsa ed25519; do
+for TYPE in rsa ecdsa ed25519; do
     generate_key_if_missing "$TYPE"
 done
 
@@ -29,7 +29,6 @@ done
 # Start Dropbear in an infinite loop
 while true; do
 	/bin/dropbear -F \
-		-r "$KEYDIR/dropbear_host_key_dss" \
 		-r "$KEYDIR/dropbear_host_key_rsa" \
 		-r "$KEYDIR/dropbear_host_key_ecdsa" \
 		-r "$KEYDIR/dropbear_host_key_ed25519" \
