@@ -573,8 +573,10 @@ For security reasons, it is highly recommended to generate private and public ke
 ```bash
 mount -o remount,rw /mnt/rodata
 mkdir -p /mnt/rodata/wireguard
+umask 077
 wg genkey > /mnt/rodata/wireguard/privatekey
 wg pubkey < /mnt/rodata/wireguard/privatekey > /mnt/rodata/wireguard/publickey
+chmod 600 /mnt/rodata/wireguard/privatekey
 ```
 
 > 💡 **Important:** Never copy the private key off the controller unless absolutely necessary.
@@ -590,11 +592,13 @@ wg pubkey < /mnt/rodata/wireguard/privatekey > /mnt/rodata/wireguard/publickey
    mkdir -p /mnt/rodata/wireguard
    ```
 
-3. Generate private and public keys:
+3. Generate private and public keys (root-only permissions):
 
    ```bash
+   umask 077
    wg genkey > /mnt/rodata/wireguard/privatekey
    wg pubkey < /mnt/rodata/wireguard/privatekey > /mnt/rodata/wireguard/publickey
+   chmod 600 /mnt/rodata/wireguard/privatekey
    ```
 
 > 💡 **Important:** Never copy the private key off the controller unless absolutely necessary.
@@ -651,13 +655,19 @@ PersistentKeepalive = 25
 
 ### Applying Configuration
 
-1. Remount `/mnt/rodata` back to read-only:
+1. Make sure the configuration file (it contains the private key) is readable by root only, then remount `/mnt/rodata` back to read-only:
+
+   ```bash
+   chmod 600 /mnt/rodata/wireguard/wg0.conf
+   ```
+
+2. Remount `/mnt/rodata` back to read-only:
 
    ```bash
    mount -o remount,ro /mnt/rodata
    ```
 
-2. Reboot the controller to apply the WireGuard connection:
+3. Reboot the controller to apply the WireGuard connection:
 
    ```bash
    reboot

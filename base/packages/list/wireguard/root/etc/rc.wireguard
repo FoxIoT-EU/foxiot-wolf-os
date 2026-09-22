@@ -2,6 +2,9 @@
 
 readonly WG_CONF_PATH="$1"
 
+# The temporary config handed to wg(8) contains the private key: create it root-only
+umask 077
+
 # Validate input arguments
 if [ ! "$WG_CONF_PATH" ]; then
 	echo -e "Usage:\n\t$0 <configuration file>"
@@ -51,6 +54,7 @@ done
 _CNT=0
 while true; do
 	if wg setconf "$IFACE" /tmp/."$IFACE"; then
+		rm -f /tmp/."$IFACE"
 		break
 	fi
 	
