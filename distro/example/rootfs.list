@@ -4,6 +4,7 @@
 #include "mtd.list"
 #include "uqmi.list"
 #include "libusb.list"
+#include "qfirehose.list"
 #include "iptables.list"
 #include "ext4_utils.list"
 #include "chrony.list"

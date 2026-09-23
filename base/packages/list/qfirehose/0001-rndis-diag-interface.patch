@@ -1,0 +1,41 @@
+diff --git a/usb_linux.c b/usb_linux.c
+index 8d981c2..deeed10 100644
+--- a/usb_linux.c
++++ b/usb_linux.c
+@@ -372,6 +372,8 @@ static void quectel_get_usb_device_info(const char *module_sys_path, struct quec
+     char devname[64];
+     int desc_fd;
+     __u8 bInterfaceNumber = 0;
++    int diag_candidate = -1;          /* first Cls=ff Sub=ff Prot=ff interface (Qualcomm DIAG/DM) */
++    int if0_vendor_specific = 1;      /* interface 0 is vendor-specific (default composition) */
+     int dev_mknod_and_delete_after_use = 0;
+ 
+     MODULE_SYS_INFO sysinfo;
+@@ -444,6 +446,13 @@ static void quectel_get_usb_device_info(const char *module_sys_path, struct quec
+                 interface->bInterfaceNumber, interface->bAlternateSetting, interface->bNumEndpoints,
+                 interface->bInterfaceClass, interface->bInterfaceSubClass, interface->bInterfaceProtocol);
+             bInterfaceNumber = interface->bInterfaceNumber;
++            if (interface->bAlternateSetting == 0) {
++                if (interface->bInterfaceNumber == 0)
++                    if0_vendor_specific = (interface->bInterfaceClass == 0xff);
++                if (diag_candidate < 0 && interface->bInterfaceClass == 0xff
++                        && interface->bInterfaceSubClass == 0xff && interface->bInterfaceProtocol == 0xff)
++                    diag_candidate = interface->bInterfaceNumber;
++            }
+         }
+         else if (h->bLength == USB_DT_ENDPOINT_SIZE && h->bDescriptorType == USB_DT_ENDPOINT) {
+             if (bInterfaceNumber < EC20_MAX_INF) {
+@@ -494,6 +503,13 @@ static void quectel_get_usb_device_info(const char *module_sys_path, struct quec
+ 
+     else if (udev->idVendor == 0x3c93 && udev->idProduct == 0xffff)   //EG060K-EA
+         usb_dm_interface = 8;
++
++    /* FoxIoT: EC25/EG25 in RNDIS or ECM composition (AT+QCFG="usbnet",1/3) put the network
++       interfaces first; the DIAG/DM port is then the first Cls=ff Sub=ff Prot=ff interface. */
++    if (usb_dm_interface == 0 && !if0_vendor_specific && diag_candidate > 0) {
++        dbg_time("interface 0 is not vendor-specific, using DIAG interface %d\n", diag_candidate);
++        usb_dm_interface = diag_candidate;
++    }
+ }
+ 
+ static int usbfs_bulk_write(struct quectel_usb_device *udev, const void *data, int len, int timeout_msec, int need_zlp) {

@@ -1,0 +1,2 @@
+dir /bin 755 0 0
+file /bin/QFirehose ${ROOT}/bin/QFirehose 755 0 0
