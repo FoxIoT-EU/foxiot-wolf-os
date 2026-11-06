@@ -9,15 +9,33 @@ iptables -P OUTPUT ACCEPT
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
 
+# Drop malformed / out-of-state packets
+# (bad flag combos like SYN+FIN, bad checksum, truncated)
+iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+# A new TCP connection must start with a plain SYN
+iptables -A INPUT -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+
 # Accept on WireGuard                                  
 iptables -A INPUT -i wg0 -j ACCEPT
 iptables -A OUTPUT -o wg0 -j ACCEPT
 
+# -------------------------
+# Incoming ping, rate-limited (10/s, burst 20)
+# -------------------------
+# Must come before the ESTABLISHED rule: conntrack treats a running ping as ESTABLISHED.
+iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 10/s --limit-burst 20 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
+
 # Allow established sessions to receive traffic
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
-# Allow icmp
-iptables -A INPUT -p icmp -j ACCEPT
+# Other ICMP not related to our connections, rate-limited (10/s, burst 20).
+iptables -A INPUT -p icmp -m limit --limit 10/s --limit-burst 20 -j ACCEPT
+iptables -A INPUT -p icmp -j DROP
+
+# SSH brute-force limit (eth0): max 10 new connections/min per source IP, burst 20
+iptables -A INPUT -i eth0 -p tcp --dport 22 --syn -m hashlimit --hashlimit-above 10/min \
+    --hashlimit-burst 20 --hashlimit-mode srcip --hashlimit-name ssh -j DROP
 
 # Allow ssh via eth0 
 iptables -A INPUT -i eth0  -p tcp --dport 22 -j ACCEPT

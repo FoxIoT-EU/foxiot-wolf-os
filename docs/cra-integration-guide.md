@@ -137,7 +137,7 @@ If the integrator discovers an actively exploited vulnerability or severe incide
 - Maintain the default-deny policy. Do **not** flush or replace existing rules — only append new ones.
 - Document every additional open port in the integrator's own user information (Annex II).
 
-**Where to apply changes:** the firewall is configured by the script `/etc/firewall` in the integrator's distro folder of the Wolf-OS build tree. Wolf-OS ships this script with default-deny `INPUT`/`FORWARD`, `ACCEPT` for `lo`, `wg0`, established connections, ICMP, and SSH on `eth0`. Add application-specific rules at the end of the script.
+**Where to apply changes:** the firewall is configured by the script `/etc/firewall` in the integrator's distro folder of the Wolf-OS build tree. Wolf-OS ships this script with default-deny `INPUT`/`FORWARD`, `ACCEPT` for `lo`, `wg0`, established connections, rate-limited ICMP and SSH on `eth0`, and drops invalid packets. Add application-specific rules at the end of the script.
 
 **Where to find the reference firewall script:** [Wolf-OS public repository — `distro/example/root/etc/firewall`](https://github.com/FoxIoT-EU/foxiot-wolf-os/blob/main/distro/example/root/etc/firewall).
 
