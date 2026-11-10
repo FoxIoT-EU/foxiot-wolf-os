@@ -32,26 +32,6 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 	};
-
-	leds1: leds1 {
-		compatible = "gpio-leds";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_leds1>;
-
-		ledg {
-			label = "green:header";
-			gpios = <&gpioD 10 GPIO_ACTIVE_HIGH>;
-			color = <LED_COLOR_ID_GREEN>;
-			function = LED_FUNCTION_DEBUG;
-		};
-
-		ledy {
-			label = "yellow:header";
-			gpios = <&gpioD 11 GPIO_ACTIVE_HIGH>;
-			color = <LED_COLOR_ID_YELLOW>;
-			function = LED_FUNCTION_DEBUG;
-		};	
-	};
 };
 
 &pinctrl_default {
@@ -60,7 +40,6 @@
 		function = "mfp0";
 		input-schmitt-enable = <1>;
 	};
-
 };
 
 &pinctrl {
@@ -73,13 +52,6 @@
 		pins = "PA0", "PA1";
 		function = "mfp0";
 		drive-open-drain;
-	};
-	pinctrl_leds1: pinctrl_leds1 {
-		leds {
-			pins = "PD10", "PD11";
-			function = "mfp0";
-			drive-push-pull;
-		};
 	};
 };
 
