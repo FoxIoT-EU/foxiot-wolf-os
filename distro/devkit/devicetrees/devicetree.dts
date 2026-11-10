@@ -1,0 +1,45 @@
+/dts-v1/;
+
+#include "foxiot_wolf.dts"
+
+&aliases {
+	i2c0 = &i2c0;
+};
+
+&uart2 {
+	status = "okay";
+};
+
+/ {
+	i2c0: i2c0 {
+		compatible = "i2c-gpio";
+		scl-gpios = <&gpioA 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		sda-gpios = <&gpioA 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		clock-frequency = <100000>;
+		pinctrl-0 = <&pinctrl_i2c0>;
+		pinctrl-names = "default";
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+};
+
+&pinctrl {
+	pinctrl_i2c0: pinctrl_i2c0 {
+		pins = "PA0", "PA1";
+		function = "mfp0";
+		drive-open-drain;
+	};
+};
+
+&flash {
+	/delete-node/ ubi;
+	ubi0: ubi@2040000 {
+		label = "ubi0";
+		reg = <0x2040000 0x800000>;
+	};
+	ubi1: ubi@2840000 {
+		label = "ubi1";
+		reg = <0x2840000 0x57c0000>;
+	};
+};
+

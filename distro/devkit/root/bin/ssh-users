@@ -1,0 +1,25 @@
+#!/bin/sh
+# List SSH key fingerprints and their owners
+# Usage: ssh-users [fingerprint]
+#   No args: list all keys with fingerprints
+#   With arg: find owner matching fingerprint (partial match)
+
+KEYS_FILE="/root/.ssh/authorized_keys"
+
+if [ ! -f "$KEYS_FILE" ]; then
+	echo "No authorized_keys found"
+	exit 1
+fi
+
+# strip colons from search argument
+search=${1//:/}
+
+while read type key comment; do
+	fp=$(echo "$key" | base64 -d | sha1sum)
+	fp=${fp%% *}
+	if [ -z "$1" ]; then
+		echo "$fp $comment"
+	elif echo "$fp" | grep -q "$search"; then
+		echo "$fp $comment"
+	fi
+done < "$KEYS_FILE"

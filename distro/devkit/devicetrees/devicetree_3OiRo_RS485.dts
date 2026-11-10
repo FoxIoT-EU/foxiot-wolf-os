@@ -1,0 +1,97 @@
+/dts-v1/;
+
+#include "foxiot_wolf.dts"
+
+&aliases {
+	i2c0 = &i2c0;
+};
+
+&uart2 {
+	status = "okay";
+};
+
+&uart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart6>;
+	linux,rs485-enabled-at-boot-time;
+	status = "okay";
+};
+
+&uart8 {
+	status = "disabled";
+};
+
+/ {
+	i2c0: i2c0 {
+		compatible = "i2c-gpio";
+		scl-gpios = <&gpioA 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		sda-gpios = <&gpioA 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		clock-frequency = <100000>;
+		pinctrl-0 = <&pinctrl_i2c0>;
+		pinctrl-names = "default";
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	leds1: leds1 {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_leds1>;
+
+		ledg {
+			label = "green:header";
+			gpios = <&gpioD 10 GPIO_ACTIVE_HIGH>;
+			color = <LED_COLOR_ID_GREEN>;
+			function = LED_FUNCTION_DEBUG;
+		};
+
+		ledy {
+			label = "yellow:header";
+			gpios = <&gpioD 11 GPIO_ACTIVE_HIGH>;
+			color = <LED_COLOR_ID_YELLOW>;
+			function = LED_FUNCTION_DEBUG;
+		};	
+	};
+};
+
+&pinctrl_default {
+	inputs {
+		pins = "PE10", "PB4", "PB5";
+		function = "mfp0";
+		input-schmitt-enable = <1>;
+	};
+
+};
+
+&pinctrl {
+	pinctrl_uart6: pinctrl_uart6 {
+		pins = "PA3", "PA4", "PA5";
+		function = "mfp1";
+		bias-pull-up;
+	};
+	pinctrl_i2c0: pinctrl_i2c0 {
+		pins = "PA0", "PA1";
+		function = "mfp0";
+		drive-open-drain;
+	};
+	pinctrl_leds1: pinctrl_leds1 {
+		leds {
+			pins = "PD10", "PD11";
+			function = "mfp0";
+			drive-push-pull;
+		};
+	};
+};
+
+&flash {
+	/delete-node/ ubi;
+	ubi0: ubi@2040000 {
+		label = "ubi0";
+		reg = <0x2040000 0x800000>;
+	};
+	ubi1: ubi@2840000 {
+		label = "ubi1";
+		reg = <0x2840000 0x57c0000>;
+	};
+};
+

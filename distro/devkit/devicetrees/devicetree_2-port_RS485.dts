@@ -1,0 +1,100 @@
+/dts-v1/;
+
+#include "foxiot_wolf.dts"
+
+&aliases {
+	i2c0 = &i2c0;
+};
+
+&spi1 {
+	num-cs = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_spi1>;
+	cs-gpios = <0>, <&gpioB 1 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	flash1: flash@0 {
+		compatible = "spi-nand";
+		reg = <0>;
+		spi-max-frequency = <25000000>;
+		spi-rx-bus-width = <1>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ext_ubi: ext_ubi@0 {
+			label = "ext_ubi";
+			reg = <0x0 0x8000000>;
+		};
+	};
+};
+
+&uart2 {
+	status = "okay";
+};
+
+&uart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart6>;
+	linux,rs485-enabled-at-boot-time;
+    status = "okay";
+};
+
+&uart7 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart7>;
+	linux,rs485-enabled-at-boot-time;
+    status = "okay";
+};
+
+&uart8 {
+	status = "disabled";
+};
+
+/ {
+	i2c0: i2c0 {
+		compatible = "i2c-gpio";
+		scl-gpios = <&gpioA 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		sda-gpios = <&gpioA 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		clock-frequency = <100000>;
+		pinctrl-0 = <&pinctrl_i2c0>;
+		pinctrl-names = "default";
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+};
+
+&pinctrl {
+	pinctrl_uart6: pinctrl_uart6 {
+		pins = "PA3", "PA4", "PA5";
+		function = "mfp1";
+		bias-pull-up;
+	};
+	pinctrl_uart7: pinctrl_uart7 {
+		pins = "PB5", "PB4", "PB6";
+		function = "mfp5";
+		bias-pull-up;
+	};
+	pinctrl_i2c0: pinctrl_i2c0 {
+		pins = "PA0", "PA1";
+		function = "mfp0";
+		drive-open-drain;
+	};
+	pinctrl_spi1: pinctrl_spi1 {
+		spi {
+			pins = "PG11", "PG12", "PG13", "PG14";
+			function = "mfp2";
+			drive-push-pull;
+		};
+	};
+};
+
+&flash {
+	/delete-node/ ubi;
+	ubi0: ubi@2040000 {
+		label = "ubi0";
+		reg = <0x2040000 0x800000>;
+	};
+	ubi1: ubi@2840000 {
+		label = "ubi1";
+		reg = <0x2840000 0x57c0000>;
+	};
+};
+

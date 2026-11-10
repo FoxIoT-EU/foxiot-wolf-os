@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Dev kit installer: same as the standard install, but WITHOUT the
+# signature check, so a partner can install their first own firmware
+# (signed with their own key). On a dev kit, root can write the update
+# area directly anyway, so the check would protect nothing here.
+# The partner's firmware brings back the standard, checking installer.
+
+set -e
+
+if [ ! -f "$1" ]; then
+	echo "usage: install <firmware.itb>" >&2
+	exit 1
+fi
+
+echo "install: DEV KIT - firmware signature NOT checked: $1"
+logger -t install -p auth.warning "dev kit: firmware signature NOT checked: $1"
+
+flash_erase /dev/mtd2 0 0
+nandwrite -p /dev/mtd2 "$1"
+
+logger -t install -p auth.notice "firmware update written to update area: $1 (current: $(cat /VERSION 2>/dev/null)); active after reboot"
+exit 0
