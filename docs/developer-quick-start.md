@@ -398,7 +398,7 @@ The configuration defines how network interfaces are managed, how priorities are
     "wwan": {
       "configurations": {
         "lte": {
-          "apn": "terminal",
+          "apn": "internet",
           "ping": {
             "error": 3,
             "ip": "1.1.1.1",
